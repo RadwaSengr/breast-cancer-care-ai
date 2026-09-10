@@ -1,5 +1,13 @@
 import { Github, Linkedin, Award, Users, Heart, Sparkles } from "lucide-react";
 
+// استيراد الصور مباشرة ليقوم Vite بمعالجة مساراتها أوتوماتيكياً
+import radwaImg from "../../public/Radwa-Sengr.png";
+import ranaImg from "../../public/Rana-Amin.png";
+import mariamImg from "../../public/Mariam-Deraz.png";
+import bassantImg from "../../public/Bassant-Saleh.png";
+import gehadImg from "../../public/Gehad-Fahdy.png";
+import teamPhotoImg from "../../public/team-photo.jpg";
+
 interface TeamMember {
   name: string;
   role: string;
@@ -14,7 +22,7 @@ const teamMembers: TeamMember[] = [
     name: "Radwa Sengr",
     role: "Frontend Developer",
     bio: "تطوير واجهات المستخدم التفاعلية وتحسين تجربة المريض بشكل سلس ومريح.",
-    image: `${import.meta.env.BASE_URL}Radwa-Sengr.png`,
+    image: radwaImg,
     github: "https://github.com/RadwaSengr",
     linkedin: "https://www.linkedin.com/in/radwa-s-2b4079306?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -22,7 +30,7 @@ const teamMembers: TeamMember[] = [
     name: "Rana Amin",
     role: "AI Engineer",
     bio: "تطوير نماذج الذكاء الاصطناعي، بناء الهندسة المعمارية للنظام وربط الواجهات.",
-    image: `${import.meta.env.BASE_URL}Rana-Amin.png`,
+    image: ranaImg,
     github: "https://github.com/Rana719",
     linkedin: "https://www.linkedin.com/in/rana-amin-855085282?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -30,7 +38,7 @@ const teamMembers: TeamMember[] = [
     name: "Mariam Deraz",
     role: "AI & UX Designer",
     bio: "تصميم تجربة المستخدم وتنسيق الهوية البصرية وتسهيل الوصول للمعلومة.",
-    image: `${import.meta.env.BASE_URL}Mariam-Deraz.png`,
+    image: mariamImg,
     github: "#",
     linkedin: "www.linkedin.com/in/mariam-draz-b54647374",
   },
@@ -38,7 +46,7 @@ const teamMembers: TeamMember[] = [
     name: "Bassant Saleh",
     role: "AI & Safety Engineer",
     bio: "إدارة قواعد البيانات وإعداد البنية التحتية البرمجية وتكامل الـ APIs.",
-    image: `${import.meta.env.BASE_URL}Bassant-Saleh.png`,
+    image: bassantImg,
     github: "https://github.com/512005",
     linkedin: "https://www.linkedin.com/in/bassant-saleh-812b75315?utm_source=share_campaign=share_via&utm_content=profile&utm_medium=android_app",
   },
@@ -46,7 +54,7 @@ const teamMembers: TeamMember[] = [
     name: "Gehad Fahdy",
     role: "AI & Medical Content Specialist",
     bio: "مراجعة وإعداد المحتوى الطبي الموثوق وتجهيز العرض التقديمي للمشروع.",
-    image: `${import.meta.env.BASE_URL}Gehad-Fahdy.png`,
+    image: gehadImg,
     github: "https://github.com/gehad570",
     linkedin: "https://www.linkedin.com/in/gehad-fahdy-538687319?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -75,14 +83,9 @@ export default function About() {
       <div className="max-w-4xl mx-auto mb-16 overflow-hidden rounded-3xl border border-border/60 bg-card shadow-lg">
         <div className="ReNova Team">
           <img
-            src={`${import.meta.env.BASE_URL}team-photo.jpg`}
+            src={teamPhotoImg}
             alt="BreastCancerCare AI Team"
             className="w-full h-64 sm:h-96 object-cover object-center transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => {
-              // صورة افتراضية عصرية في حال عدم وجود الصورة بعد
-              e.currentTarget.src =
-                "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80";
-            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end p-6">
             <div className="text-white">
@@ -90,7 +93,7 @@ export default function About() {
                 <Sparkles className="w-4 h-4" /> AI Hackathon 2026
               </div>
               <p className="text-sm sm:text-base font-medium opacity-90">
-            يوم التصفيات النهائية بين أفضل 5 مشاريع مبتكرة.
+                يوم التصفيات النهائية بين أفضل 5 مشاريع مبتكرة.
               </p>
             </div>
           </div>
