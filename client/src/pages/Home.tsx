@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowRight, CheckCircle2, ChevronDown, HeartHandshake, Languages, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, HeartHandshake, Languages, Menu, ShieldCheck, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 
@@ -76,12 +76,17 @@ const content = {
 export default function Home() {
   const [, navigate] = useLocation();
   const [language, setLanguage] = useState<"ar" | "en">(() => new URLSearchParams(window.location.search).get("lang") === "ar" ? "ar" : "en");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const t = content[language];
   const alternateLanguage = language === "en" ? "ar" : "en";
   const isArabic = language === "ar";
 
   const goToChat = () => navigate(`/chat?lang=${language}`);
-  const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id: string) => {
+    setIsMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
   const changeLanguage = (nextLanguage: "ar" | "en") => {
     setLanguage(nextLanguage);
     window.history.replaceState({}, "", `/?lang=${nextLanguage}`);
@@ -90,24 +95,51 @@ export default function Home() {
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className={cn("brand-pink min-h-screen overflow-x-hidden bg-[#fffafc] text-slate-900", isArabic && "font-arabic")}>
       <div className="medical-grid min-h-screen">
-        <header className="container flex items-center justify-between py-6">
-          <button onClick={() => navigate(`/?lang=${language}`)} className="flex items-center gap-3 text-start" aria-label="BreastCancerCare AI home">
-            <span className="flex size-10 items-center justify-center rounded-2xl bg-teal-700 text-white shadow-[0_8px_20px_-8px_rgba(15,118,110,0.8)]"><HeartHandshake className="size-5" /></span>
-            <span>
-              <strong className="font-display block text-base tracking-tight">BreastCancerCare</strong>
-              <span className="block text-[0.64rem] font-bold uppercase tracking-[0.14em] text-teal-700">AI Assistant</span>
-            </span>
-          </button>
-          <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
-            <button onClick={() => navigate(`/about?lang=${language}`)} className="transition hover:text-teal-700">{t.navAbout}</button>
-            <button onClick={() => scrollTo("scope")} className="transition hover:text-teal-700">{t.navScope}</button>
-            <button onClick={() => scrollTo("sources")} className="transition hover:text-teal-700">{t.navSources}</button>
-            <button onClick={() => navigate(`/rag?lang=${language}`)} className="transition hover:text-teal-700">{t.navPipeline}</button>
-            <button onClick={() => navigate(`/services?lang=${language}`)} className="transition hover:text-teal-700">{t.navLocal}</button>
-          </nav>
-          <button onClick={() => changeLanguage(alternateLanguage)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-teal-200 hover:text-teal-800">
-            <Languages className="size-4" /> {t.language}
-          </button>
+        <header className="container relative py-6">
+          <div className="flex items-center justify-between">
+            <button onClick={() => navigate(`/?lang=${language}`)} className="flex items-center gap-3 text-start" aria-label="BreastCancerCare AI home">
+              <span className="flex size-10 items-center justify-center rounded-2xl bg-teal-700 text-white shadow-[0_8px_20px_-8px_rgba(15,118,110,0.8)]"><HeartHandshake className="size-5" /></span>
+              <span>
+                <strong className="font-display block text-base tracking-tight">BreastCancerCare</strong>
+                <span className="block text-[0.64rem] font-bold uppercase tracking-[0.14em] text-teal-700">AI Assistant</span>
+              </span>
+            </button>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
+              <button onClick={() => navigate(`/about?lang=${language}`)} className="transition hover:text-teal-700">{t.navAbout}</button>
+              <button onClick={() => scrollTo("scope")} className="transition hover:text-teal-700">{t.navScope}</button>
+              <button onClick={() => scrollTo("sources")} className="transition hover:text-teal-700">{t.navSources}</button>
+              <button onClick={() => navigate(`/rag?lang=${language}`)} className="transition hover:text-teal-700">{t.navPipeline}</button>
+              <button onClick={() => navigate(`/services?lang=${language}`)} className="transition hover:text-teal-700">{t.navLocal}</button>
+            </nav>
+
+            <div className="flex items-center gap-2">
+              <button onClick={() => changeLanguage(alternateLanguage)} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-teal-200 hover:text-teal-800">
+                <Languages className="size-4" /> {t.language}
+              </button>
+
+              {/* Mobile Menu Toggle Button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="inline-flex size-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm md:hidden hover:border-teal-200 hover:text-teal-800"
+                aria-label="Toggle navigation menu"
+              >
+                {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Dropdown Menu */}
+          {isMenuOpen && (
+            <nav className="mt-4 flex flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white/95 p-4 text-start shadow-lg backdrop-blur md:hidden">
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/about?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navAbout}</button>
+              <button onClick={() => scrollTo("scope")} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navScope}</button>
+              <button onClick={() => scrollTo("sources")} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navSources}</button>
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/rag?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navPipeline}</button>
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/services?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navLocal}</button>
+            </nav>
+          )}
         </header>
 
         <main>
