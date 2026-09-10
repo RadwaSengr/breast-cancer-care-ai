@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --radius-lg: 0.75rem;
+  --radius-md: 0.55rem;
+}
+
+:root {
+  --background: oklch(0.99 0.008 5);
+  --foreground: oklch(0.23 0.026 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.23 0.026 250);
+  --primary: oklch(0.50 0.19 5);
+  --primary-foreground: oklch(0.99 0.008 5);
+  --muted: oklch(0.96 0.018 5);
+  --muted-foreground: oklch(0.50 0.025 250);
+  --border: oklch(0.90 0.02 5);
+}
+
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--background); color: var(--foreground); font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif; }
+button, a, textarea { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+.font-display { font-family: "Fraunces", Georgia, serif; }
+.font-arabic, .font-arabic button, .font-arabic textarea { font-family: "Noto Kufi Arabic", "DM Sans", sans-serif; }
+.font-arabic .font-display { font-family: "Noto Kufi Arabic", sans-serif; font-weight: 600; }
+.container { width: 100%; margin-inline: auto; padding-inline: 1.25rem; }
+@media (min-width: 640px) { .container { max-width: 1280px; padding-inline: 2rem; } }
+@media (min-width: 1280px) { .container { padding-inline: 3.25rem; } }
+.medical-grid { background-image: linear-gradient(rgba(190, 24, 93, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(190, 24, 93, 0.05) 1px, transparent 1px); background-size: 48px 48px; }
+.eyebrow { color: rgb(190 24 93); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
+.chat-shell::-webkit-scrollbar, .chat-shell *::-webkit-scrollbar { width: 7px; }
+.chat-shell::-webkit-scrollbar-thumb, .chat-shell *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+.medical-prose { overflow-wrap: anywhere; }
+
+/* Warm breast-cancer-awareness-inspired brand palette. Red and amber remain reserved for safety alerts. */
+.brand-pink .bg-teal-50 { background-color: #fdf2f8; }
+.brand-pink .bg-teal-100 { background-color: #fce7f3; }
+.brand-pink .bg-teal-300 { background-color: #f9a8d4; }
+.brand-pink .bg-teal-400 { background-color: #f472b6; }
+.brand-pink .bg-teal-500 { background-color: #ec4899; }
+.brand-pink .bg-teal-600 { background-color: #db2777; }
+.brand-pink .bg-teal-700 { background-color: #be185d; }
+.brand-pink .bg-teal-800 { background-color: #9d174d; }
+.brand-pink .text-teal-300 { color: #f9a8d4; }
+.brand-pink .text-teal-700 { color: #be185d; }
+.brand-pink .text-teal-800 { color: #9d174d; }
+.brand-pink .text-teal-900 { color: #831843; }
+.brand-pink .border-teal-100 { border-color: #fce7f3; }
+.brand-pink .border-teal-200 { border-color: #fbcfe8; }
+.brand-pink .border-teal-300 { border-color: #f9a8d4; }
+.brand-pink .border-teal-400 { border-color: #f472b6; }
+.brand-pink [class~="bg-teal-50/55"] { background-color: rgb(253 242 248 / 55%); }
+.brand-pink [class~="bg-teal-50/65"] { background-color: rgb(253 242 248 / 65%); }
+.brand-pink [class~="bg-teal-100/65"] { background-color: rgb(252 231 243 / 65%); }
+.brand-pink [class~="text-teal-900/80"] { color: rgb(131 24 67 / 80%); }
+.brand-pink [class~="from-teal-500/20"] { --tw-gradient-from: rgb(236 72 153 / 20%) var(--tw-gradient-from-position); }
+.brand-pink .hover\:bg-teal-50:hover { background-color: #fdf2f8; }
+.brand-pink .hover\:bg-teal-300:hover { background-color: #f9a8d4; }
+.brand-pink .hover\:bg-teal-800:hover { background-color: #9d174d; }
+.brand-pink .hover\:border-teal-200:hover { border-color: #fbcfe8; }
+.brand-pink .hover\:border-teal-300:hover { border-color: #f9a8d4; }
+.brand-pink .hover\:text-teal-800:hover { color: #9d174d; }
+.brand-pink .focus-within\:border-teal-400:focus-within { border-color: #f472b6; }
+.brand-pink .focus-within\:ring-teal-50:focus-within { --tw-ring-color: #fdf2f8; }
+.brand-pink .accent-teal-700 { accent-color: #be185d; }
+.brand-pink .\!text-teal-300 { color: #f9a8d4 !important; }
+@media (prefers-reduced-motion: no-preference) { .chat-shell, .chat-shell * { scroll-behavior: smooth; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }

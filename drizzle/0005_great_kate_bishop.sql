@@ -1,0 +1,4 @@
+-- The knowledge_chunk_vectors table and its foreign key are created in
+-- 0004_lean_micromax.sql together with TiDB's HNSW vector index. This no-op
+-- migration records the later addition of the typed Drizzle model without
+-- attempting to recreate the existing native VECTOR table.
