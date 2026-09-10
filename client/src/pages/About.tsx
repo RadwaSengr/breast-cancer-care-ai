@@ -14,7 +14,7 @@ const teamMembers: TeamMember[] = [
     name: "Radwa Sengr",
     role: "Frontend Developer",
     bio: "تطوير واجهات المستخدم التفاعلية وتحسين تجربة المريض بشكل سلس ومريح.",
-    image: "Radwa-Sengr.png",
+    image: "`${import.meta.env.BASE_URL}Radwa-Sengr.png`",
     github: "https://github.com/RadwaSengr",
     linkedin: "https://www.linkedin.com/in/radwa-s-2b4079306?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -22,7 +22,7 @@ const teamMembers: TeamMember[] = [
     name: "Rana Amin",
     role: "AI Engineer",
     bio: "تطوير نماذج الذكاء الاصطناعي، بناء الهندسة المعمارية للنظام وربط الواجهات.",
-    image: "Rana-Amin.png",
+    image: "${import.meta.env.BASE_URL}Rana-Amin.png",
     github: "https://github.com/Rana719",
     linkedin: "https://www.linkedin.com/in/rana-amin-855085282?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -30,7 +30,7 @@ const teamMembers: TeamMember[] = [
     name: "Mariam Deraz",
     role: "AI & UX Designer",
     bio: "تصميم تجربة المستخدم وتنسيق الهوية البصرية وتسهيل الوصول للمعلومة.",
-    image: "Mariam-Deraz.png",
+    image: "${import.meta.env.BASE_URL}Mariam-Deraz.png",
     github: "#",
     linkedin: "www.linkedin.com/in/mariam-draz-b54647374",
   },
@@ -38,7 +38,7 @@ const teamMembers: TeamMember[] = [
     name: "Bassant Saleh",
     role: "AI & Safety Engineer",
     bio: "إدارة قواعد البيانات وإعداد البنية التحتية البرمجية وتكامل الـ APIs.",
-    image: "Bassant-Saleh.png",
+    image: "${import.meta.env.BASE_URL}Bassant-Saleh.png",
     github: "https://github.com/512005",
     linkedin: "https://www.linkedin.com/in/bassant-saleh-812b75315?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
   },
@@ -46,7 +46,7 @@ const teamMembers: TeamMember[] = [
     name: "Gehad Fahdy",
     role: "AI & Medical Content Specialist",
     bio: "مراجعة وإعداد المحتوى الطبي الموثوق وتجهيز العرض التقديمي للمشروع.",
-    image: "Gehad-Fahdy.png",
+    image: "${import.meta.env.BASE_URL}Gehad-Fahdy.png",
     github: "https://github.com/gehad570",
     linkedin: "https://www.linkedin.com/in/gehad-fahdy-538687319?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
@@ -75,7 +75,7 @@ export default function About() {
       <div className="max-w-4xl mx-auto mb-16 overflow-hidden rounded-3xl border border-border/60 bg-card shadow-lg">
         <div className="ReNova Team">
           <img
-            src="/team-photo.jpg"
+            src={`${import.meta.env.BASE_URL}team-photo.jpg`}
             alt="BreastCancerCare AI Team"
             className="w-full h-64 sm:h-96 object-cover object-center transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
