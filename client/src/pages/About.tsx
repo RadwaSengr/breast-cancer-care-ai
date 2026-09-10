@@ -1,12 +1,11 @@
 import { Github, Linkedin, Award, Users, Heart, Sparkles } from "lucide-react";
 
-// استيراد الصور مباشرة ليقوم Vite بمعالجة مساراتها أوتوماتيكياً
-import radwaImg from "../../public/Radwa-Sengr.png";
-import ranaImg from "../../public/Rana-Amin.png";
-import mariamImg from "../../public/Mariam-Deraz.png";
-import bassantImg from "../../public/Bassant-Saleh.png";
-import gehadImg from "../../public/Gehad-Fahdy.png";
-import teamPhotoImg from "../../public/team-photo.jpg";
+import radwaImg from "../assets/Radwa-Sengr.png";
+import ranaImg from "../assets/Rana-Amin.png";
+import mariamImg from "../assets/Mariam-Deraz.png";
+import bassantImg from "../assets/Bassant-Saleh.png";
+import gehadImg from "../assets/Gehad-Fahdy.png";
+import teamPhotoImg from "../assets/team-photo.jpg";
 
 interface TeamMember {
   name: string;
