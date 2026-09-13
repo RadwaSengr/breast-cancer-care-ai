@@ -39,6 +39,7 @@ function newSessionId() {
 
 export default function Chat() {
   const [, navigate] = useLocation();
+  const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
   const [language, setLanguage] = useState<"ar" | "en">(() => new URLSearchParams(window.location.search).get("lang") === "ar" ? "ar" : "en");
   const isArabic = language === "ar";
   const t = copy[language];
@@ -81,7 +82,7 @@ export default function Chat() {
   const switchLanguage = () => {
     const nextLanguage = language === "en" ? "ar" : "en";
     setLanguage(nextLanguage);
-    window.history.replaceState({}, "", `/chat?lang=${nextLanguage}`);
+    window.history.replaceState({}, "", `${baseUrl}/chat?lang=${nextLanguage}`);
   };
 
   const toggleClearOnExit = (checked: boolean) => {
@@ -91,12 +92,12 @@ export default function Chat() {
 
   const leaveChat = () => {
     if (!clearOnExit) {
-      navigate(`/?lang=${language}`);
+      navigate(`${baseUrl}/?lang=${language}`);
       return;
     }
     window.localStorage.removeItem("aftercare-session-id");
     window.localStorage.removeItem(`aftercare-static-messages-${sessionId}`);
-    navigate(`/?lang=${language}`);
+    navigate(`${baseUrl}/?lang=${language}`);
   };
 
   return (
