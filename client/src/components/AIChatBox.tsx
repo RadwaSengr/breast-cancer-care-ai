@@ -2,9 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
+  Check,
+  Copy as CopyIcon,
   ExternalLink,
   HeartPulse,
   Loader2,
+  Mic,
+  MicOff,
   Send,
   ShieldCheck,
   Siren,
@@ -48,13 +52,18 @@ type Copy = {
   feedbackPrompt: string;
   feedbackUp: string;
   feedbackDown: string;
+  copyAnswer?: string;
+  copied?: string;
+  voiceInput?: string;
+  voiceListening?: string;
+  voiceUnsupported?: string;
 };
 
 type AIChatBoxProps = {
   messages: Array<PatientMessage | Message>;
   onSendMessage: (content: string) => void;
   onFollowUp?: (question: string) => void;
-  onFeedback?: (messageId: number, feedback: "up" | "down") => void;
+  onFeedback?: (messageId: string | number, feedback: "up" | "down") => void;
   isLoading?: boolean;
   disabled?: boolean;
   language?: "ar" | "en";
@@ -68,6 +77,7 @@ type AIChatBoxProps = {
 const DEFAULT_COPY: Copy = {
   composerPlaceholder: "Type your message…", send: "Send", thinking: "Thinking…", emptyTitle: "Start a conversation",
   emptyBody: "Ask a question to begin.", suggestedTitle: "Suggested questions", messageDisclaimer: "Educational information only.", sources: "Sources", questionSources: "Question sources", questionSourcesNote: "Trusted source excerpts used to understand your question", feedbackPrompt: "Was this helpful?", feedbackUp: "Helpful", feedbackDown: "Not helpful",
+  copyAnswer: "Copy answer", copied: "Copied!", voiceInput: "Voice input", voiceListening: "Listening… Speak now", voiceUnsupported: "Voice recognition not supported in this browser",
 };
 
 function renderSourceLinks(value: string) {
@@ -143,8 +153,13 @@ export function AIChatBox({
   suggestedPrompts,
 }: AIChatBoxProps) {
   const [input, setInput] = useState("");
+  const [copiedMessageId, setCopiedMessageId] = useState<string | number | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const isArabic = language === "ar";
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -153,12 +168,58 @@ export function AIChatBox({
   const submit = () => {
     const value = input.trim();
     if (!value || isLoading || disabled) return;
+    if (isListening && recognitionRef.current) {
+      try { recognitionRef.current.stop(); } catch {}
+      setIsListening(false);
+    }
     onSendMessage(value);
     setInput("");
     window.setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
-  const isArabic = language === "ar";
+  const handleCopy = (id: string | number, text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedMessageId(id);
+      window.setTimeout(() => setCopiedMessageId(null), 2000);
+    }).catch(() => undefined);
+  };
+
+  const toggleVoiceInput = () => {
+    if (typeof window === "undefined") return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert(copy.voiceUnsupported ?? DEFAULT_COPY.voiceUnsupported);
+      return;
+    }
+
+    if (isListening && recognitionRef.current) {
+      try { recognitionRef.current.stop(); } catch {}
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = isArabic ? "ar-EG" : "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => setIsListening(true);
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0]?.[0]?.transcript;
+        if (transcript) {
+          setInput(prev => (prev ? `${prev} ${transcript}` : transcript));
+        }
+      };
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch {
+      setIsListening(false);
+    }
+  };
   const visibleMessages: PatientMessage[] = messages
     .filter((message): message is PatientMessage | Message => message.role !== "system")
     .map((message, index) => ({
@@ -278,23 +339,43 @@ export function AIChatBox({
                     <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-teal-700" />
                     <p>{copy.messageDisclaimer}</p>
                   </div>
-                  {onFeedback && typeof message.id === "number" && (
-                    <div className="mt-3 flex items-center gap-2 border-t border-slate-100 pt-3">
-                      <span className="me-1 text-xs font-medium text-slate-500">{copy.feedbackPrompt}</span>
-                      <button
-                        type="button"
-                        onClick={() => onFeedback(message.id as number, "up")}
-                        aria-label={copy.feedbackUp}
-                        className={cn("inline-flex size-7 items-center justify-center rounded-lg border transition", message.feedback === "up" ? "border-teal-300 bg-teal-50 text-teal-800" : "border-slate-200 text-slate-500 hover:border-teal-200 hover:text-teal-800")}
-                      ><ThumbsUp className="size-3.5" /></button>
-                      <button
-                        type="button"
-                        onClick={() => onFeedback(message.id as number, "down")}
-                        aria-label={copy.feedbackDown}
-                        className={cn("inline-flex size-7 items-center justify-center rounded-lg border transition", message.feedback === "down" ? "border-rose-300 bg-rose-50 text-rose-700" : "border-slate-200 text-slate-500 hover:border-rose-200 hover:text-rose-700")}
-                      ><ThumbsDown className="size-3.5" /></button>
-                    </div>
-                  )}
+                  <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3">
+                    {onFeedback ? (
+                      <div className="flex items-center gap-2">
+                        <span className="me-1 text-xs font-medium text-slate-500">{copy.feedbackPrompt}</span>
+                        <button
+                          type="button"
+                          onClick={() => onFeedback(message.id, "up")}
+                          aria-label={copy.feedbackUp}
+                          className={cn("inline-flex size-7 items-center justify-center rounded-lg border transition", message.feedback === "up" ? "border-teal-300 bg-teal-50 text-teal-800" : "border-slate-200 text-slate-500 hover:border-teal-200 hover:text-teal-800")}
+                        ><ThumbsUp className="size-3.5" /></button>
+                        <button
+                          type="button"
+                          onClick={() => onFeedback(message.id, "down")}
+                          aria-label={copy.feedbackDown}
+                          className={cn("inline-flex size-7 items-center justify-center rounded-lg border transition", message.feedback === "down" ? "border-rose-300 bg-rose-50 text-rose-700" : "border-slate-200 text-slate-500 hover:border-rose-200 hover:text-rose-700")}
+                        ><ThumbsDown className="size-3.5" /></button>
+                      </div>
+                    ) : <div />}
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(message.id, message.content)}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:border-teal-200 hover:bg-teal-50 hover:text-teal-800"
+                      title={copy.copyAnswer ?? DEFAULT_COPY.copyAnswer}
+                    >
+                      {copiedMessageId === message.id ? (
+                        <>
+                          <Check className="size-3.5 text-teal-700" />
+                          <span className="text-teal-700">{copy.copied ?? DEFAULT_COPY.copied}</span>
+                        </>
+                      ) : (
+                        <>
+                          <CopyIcon className="size-3.5" />
+                          <span>{copy.copyAnswer ?? DEFAULT_COPY.copyAnswer}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -349,6 +430,21 @@ export function AIChatBox({
               rows={1}
               className="min-h-11 max-h-32 resize-none border-0 bg-transparent px-3 py-2.5 text-sm leading-6 shadow-none focus-visible:ring-0"
             />
+            <Button
+              type="button"
+              onClick={toggleVoiceInput}
+              disabled={disabled || isLoading}
+              aria-label={copy.voiceInput ?? DEFAULT_COPY.voiceInput}
+              title={isListening ? (copy.voiceListening ?? DEFAULT_COPY.voiceListening) : (copy.voiceInput ?? DEFAULT_COPY.voiceInput)}
+              className={cn(
+                "size-11 shrink-0 rounded-xl transition",
+                isListening
+                  ? "animate-pulse bg-rose-600 text-white shadow-md hover:bg-rose-700"
+                  : "border border-slate-200 bg-white text-slate-700 hover:border-teal-200 hover:bg-teal-50 hover:text-teal-800",
+              )}
+            >
+              {isListening ? <MicOff className="size-4" /> : <Mic className="size-4" />}
+            </Button>
             <Button
               type="submit"
               disabled={!input.trim() || disabled || isLoading}

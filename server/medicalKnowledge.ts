@@ -11,43 +11,224 @@ export type MedicalSource = {
 };
 
 /**
- * Curated, short source records for the hackathon prototype.
- * These are educational summaries of the linked primary sources, not treatment instructions.
+ * Authoritative medical and local support sources for breast cancer care and aftercare.
+ * Derived from official publications:
+ * 1. Baheya Foundation: Psychosocial Support, Women Empowerment & Volunteering (https://baheya.org/ar/baheya_services/4)
+ * 2. NCI: Infection and Neutropenia during Cancer Treatment (https://www.cancer.gov/about-cancer/treatment/side-effects/infection)
+ * 3. NCCN: Guidelines for Patients - Breast Cancer & Supportive Care (https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients)
+ * 4. Baheya Foundation: Booking, Branches, and Eligibility (https://baheya.org/ar/media_article/320)
+ * 5. ASCO: Guidelines on Survivorship Care (https://www.asco.org/news-initiatives/current-initiatives/cancer-care-initiatives/prevention-survivorship/survivorship-compendium/guidelines)
  */
 export const MEDICAL_SOURCES: MedicalSource[] = [
+  {
+    id: "baheya-psychosocial-volunteering",
+    organization: "مؤسسة بهية",
+    title: {
+      ar: "مؤسسة بهية: قسم التطوع والدعم النفسي وتمكين المحاربات",
+      en: "Baheya Foundation: Psychosocial Support, Women Empowerment & Volunteering",
+    },
+    url: "https://baheya.org/ar/baheya_services/4",
+    citationLabel: { ar: "[مؤسسة بهية — الدعم النفسي]", en: "[Baheya — Psychosocial Support]" },
+    keywords: [
+      "دعم نفسي", "استشارة", "جلسات استشارة", "قلق", "اكتئاب", "صدمة", "جودة الحياة", "رحلات", "زيارات منزلية",
+      "تمكين", "ورش", "خياطة", "إكسسوارات", "رسم", "بازار", "بازارات", "موسيقى", "دراما", "محو أمية", "لغة إنجليزية",
+      "بوتيك بهية", "بوتيك", "ملابس", "قسائم", "تطوع", "متطوعين", "بهية", "16602",
+      "psychosocial", "counseling", "anxiety", "depression", "quality of life", "home visits",
+      "empowerment", "workshops", "sewing", "boutique", "vouchers", "volunteering", "volunteer", "bahya",
+    ],
+    content: {
+      ar: "تقدم مستشفى بهية منظومة متكاملة من خدمات الدعم النفسي والمهني والترفيهي لمريضات سرطان الثدي طوال رحلة العلاج والتعافي:\n" +
+        "1. الدعم النفسي: جلسات استشارة جماعية وفردية منتظمة لتقديم الدعم العاطفي للمريضات وأسرهن للتعامل مع الصدمة الأولية للتشخيص وتقليل القلق والاكتئاب وتحسين جودة الحياة وإعادة الأمل. كما تنظم المستشفى رحلات ترفيهية وفعاليات في جميع أنحاء مصر لتخفيف التوتر، وزيارات منزلية مخصصة للمريضات اللاتي ليس لديهن مقدمو رعاية.\n" +
+        "2. تمكين السيدات: ورش تدريبية مهنية متنوعة في الخياطة وصناعة الإكسسوارات والرسم لتزويد المحاربات بمهارات تدعمهن مالياً مع المشاركة في البازارات لبيع منتجاتهن؛ جلسات الفنون الأدائية والموسيقى والدراما والأداء السنوي أمام الجمهور؛ دروس محو الأمية واللغة الإنجليزية؛ وجلسات التأمل واليوغا والتغذية الصحية.\n" +
+        "3. مبادرة بوتيك بهية: مبادرة فريدة توفر ملابس مجانية راقية للمريضات وأسرهن لتعزيز الثقة بالنفس، حيث تُمنح 4 قسائم سنوياً للمحاربة لاختيار ما يناسبها بحرية تامة.\n" +
+        "4. قسم التطوع: إتاحة الفرصة للمتطوعين لتقديم الدعم العاطفي والمرافقة والمساعدة في الحركة والتنقل.\n" +
+        "جميع خدمات بهية تقدم بالمجان 100%، وللحجز أو الاستفسار اتصلي بالخط الساخن 16602 (من الأحد إلى الخميس من 9 ص إلى 5 م).",
+      en: "Baheya Foundation provides a comprehensive system of psychosocial, vocational, and recreational support services for breast cancer patients:\n" +
+        "1. Psychosocial Support: Regular individual and group counseling sessions for emotional support, helping patients and families cope with initial diagnosis shock, reducing anxiety and depression, and boosting quality of life. It also organizes recreational trips across Egypt to relieve stress and provides dedicated home visits for patients who lack caregivers.\n" +
+        "2. Women Empowerment: Vocational workshops in sewing, accessory making, and painting to provide financial empowerment, alongside bazaar participation to sell handmade products. It also offers performing arts (music, drama, and annual theatrical performances), literacy and English classes, and regular meditation, yoga, and nutrition sessions.\n" +
+        "3. Boutique Baheya: A unique initiative providing free high-quality clothing to patients and their families through 4 vouchers per year to foster self-esteem.\n" +
+        "4. Volunteer Department: Enables volunteers to offer companionship, emotional encouragement, and mobility assistance.\n" +
+        "All services are completely free. For inquiries or booking, call hotline 16602 (Sun-Thu 9 AM-5 PM).",
+    },
+  },
+  {
+    id: "nci-infection-neutropenia",
+    organization: "National Cancer Institute",
+    title: {
+      ar: "المعهد الوطني للسرطان: العدوى ونقص العدلات أثناء علاج السرطان",
+      en: "National Cancer Institute: Infection and Neutropenia during Cancer Treatment",
+    },
+    url: "https://www.cancer.gov/about-cancer/treatment/side-effects/infection",
+    citationLabel: { ar: "[المعهد الوطني للسرطان]", en: "[NCI]" },
+    keywords: [
+      "fever", "temperature", "infection", "chills", "neutropenia", "neutrophils", "catheter", "port", "redness", "swelling", "wound", "drainage", "pus", "pain", "breathing", "rash", "mouth sores", "tylenol", "aspirin", "ibuprofen", "handwashing", "food safety",
+      "حمى", "حرارة", "سخونية", "عدوى", "قشعريرة", "نقص العدلات", "كرات الدم البيضاء", "مناعة", "قسطرة", "بورت", "احمرار", "تورم", "جرح", "إفراز", "صديد", "ألم", "طفح", "تقرحات فم", "خافض حرارة", "أسبرين", "باراسيتامول", "غسل اليدين", "سلامة الغذاء",
+    ],
+    content: {
+      ar: "يوضح المعهد الوطني للسرطان (NCI) الإرشادات الحيوية للوقاية والتعامل مع العدوى ونقص العدلات (خلايا الدم البيضاء / Neutropenia) أثناء علاج السرطان:\n" +
+        "• علامات العدوى التي تستوجب الاتصال الفوري بفريق الرعاية الصحية:\n" +
+        "  - ارتفاع درجة الحرارة إلى 38° مئوية (100.5° فهرنهايت) أو أعلى.\n" +
+        "  - قشعريرة أو رجفة بالجسم.\n" +
+        "  - سعال أو ألم والتهاب في الحلق.\n" +
+        "  - إسهال أو ألم في الأذن أو الجيوب الأنفية أو صداع وتصلب الرقبة.\n" +
+        "  - طفح جلدي أو تقرحات وبقع بيضاء في الفم أو على اللسان.\n" +
+        "  - احمرار أو تورم أو ألم أو صديد، خاصة حول موضع القسطرة/البورت (Catheter/Port) أو جرح العملية.\n" +
+        "  - بول دموي أو عكر أو ألم وحرقة أثناء التبول.\n" +
+        "• تحذير طبي حرج: العدوى أثناء علاج السرطان قد تهدد الحياة وتتطلب تدخلاً طبياً عاجلاً. اتصلي بفريقك الطبي فوراً، ولا تتناولي أدوية خافضة للحرارة مثل الأسبرين أو الباراسيتامول (تايلينول/بنادول) أو الإيبوبروفين قبل استشارة الطبيب أو الممرضة؛ لأنها قد تخفض الحرارة مؤقتاً وتخفي علامات عدوى خطيرة تتطلب علاجاً فورياً.\n" +
+        "• الوقاية اليومية: غسل اليدين المتكرر بالماء الدافئ والصابون خاصة قبل الأكل؛ الحفاظ على نظافة وجفاف موضع القسطرة؛ تنظيف الأسنان وفحص الفم يومياً؛ تجنب الزحام والمصابين بنزلات البرد ومن تلقوا لقاحات حية حديثاً؛ والحرص على طهي اللحوم والبيض جيداً وغسل الخضروات والفواكه بعناية.",
+      en: "NCI outlines critical guidance for preventing and managing infections and neutropenia (low white blood cell count) during cancer treatment:\n" +
+        "• Signs of infection requiring immediate contact with your healthcare team:\n" +
+        "  - Fever of 100.5°F (38°C) or higher.\n" +
+        "  - Chills or sweats.\n" +
+        "  - Cough or sore throat.\n" +
+        "  - Diarrhea, ear pain, sinus pain, headache, or stiff neck.\n" +
+        "  - Skin rash, or mouth sores / white coating on tongue.\n" +
+        "  - Redness, swelling, pain, or pus, especially around catheter/port sites or surgical incisions.\n" +
+        "  - Bloody or cloudy urine, or burning during urination.\n" +
+        "• Critical Warning: Infections during cancer treatment can be life-threatening and require urgent medical care. Call your oncology team right away. DO NOT take fever reducers such as aspirin, acetaminophen (Tylenol), or ibuprofen before speaking with your doctor or nurse, as they can mask fever and hide severe underlying infection.\n" +
+        "• Prevention tips: Wash hands thoroughly and frequently with warm water and soap; keep catheter sites clean and dry; brush teeth and check mouth for sores daily; avoid crowds, sick individuals, and recent live-vaccine recipients; follow food safety (cook meat/eggs thoroughly, wash/peel fruits and vegetables).",
+    },
+  },
+  {
+    id: "nccn-patient-guidelines",
+    organization: "National Comprehensive Cancer Network",
+    title: {
+      ar: "شبكة NCCN: إرشادات شبكة السرطان الشاملة للمرضى (سرطان الثدي)",
+      en: "NCCN Guidelines for Patients: Breast Cancer & Supportive Care",
+    },
+    url: "https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients",
+    citationLabel: { ar: "[إرشادات NCCN للمرضى]", en: "[NCCN Patient Guidelines]" },
+    keywords: [
+      "nccn", "guidelines", "patient guideline", "breast cancer", "dcis", "invasive", "inflammatory", "metastatic", "screening", "fatigue", "distress", "low blood cell counts", "nausea", "survivorship",
+      "إرشادات nccn", "إرشادات المرضى", "سرطان الثدي", "الموضعي", "الارتشاحي", "الالتهابي", "المنتشر", "المرحلة", "الكشف المبكر", "الإرهاق", "الضيق النفسي", "نقص كرات الدم", "الغثيان", "رعاية ما بعد العلاج",
+    ],
+    content: {
+      ar: "توفر شبكة NCCN إرشادات موثوقة ومبسطة للمرضى ومقدمي الرعاية مدعومة بالرسوم التوضيحية والتعريفات لتمكينهم من اتخاذ قرارات علاجية مشتركة ومستنيرة مع أطبائهم:\n" +
+        "• إرشادات أنواع ومراحل سرطان الثدي:\n" +
+        "  - السرطان القنوي الموضعي في الموقع (DCIS).\n" +
+        "  - سرطان الثدي الارتشاحي/الغازي (Invasive Breast Cancer).\n" +
+        "  - سرطان الثدي الالتهابي (Inflammatory Breast Cancer).\n" +
+        "  - سرطان الثدي النقيلي/المنتشر (Metastatic Breast Cancer).\n" +
+        "  - إرشادات الفحص والتشخيص المبكر وتقييم المخاطر.\n" +
+        "• إرشادات الرعاية التلطيفية والداعمة (Supportive Care):\n" +
+        "  - إدارة الإرهاق والتعب المصاحب للسرطان (Cancer-Related Fatigue).\n" +
+        "  - التعامل مع الضغط والاضطراب النفسي (Distress Management).\n" +
+        "  - إدارة انخفاض خلايا الدم والمناعة والأنيميا (Low Blood Cell Counts).\n" +
+        "  - السيطرة على الغثيان والقيء المصاحب للعلاج.\n" +
+        "  - رعاية ما بعد العلاج والآثار المتأخرة وطويلة المدى (Survivorship Care).\n" +
+        "هذه الإرشادات أداة تعليمية حوارية لتمكين المريضة ومساعدتها في إعداد أسئلتها لفريقها المعالج وليست بديلاً عن الخطة الطبية الفردية.",
+      en: "NCCN Guidelines for Patients present expert, plain-language guidance with illustrations and definitions to empower patients and caregivers in shared decision-making with clinicians:\n" +
+        "• Breast Cancer Types and Stages:\n" +
+        "  - Ductal Carcinoma In Situ (DCIS).\n" +
+        "  - Invasive Breast Cancer.\n" +
+        "  - Inflammatory Breast Cancer.\n" +
+        "  - Metastatic Breast Cancer.\n" +
+        "  - Breast Cancer Screening and Diagnosis.\n" +
+        "• Supportive Care Guidelines:\n" +
+        "  - Cancer-Related Fatigue.\n" +
+        "  - Distress Management during Cancer Care.\n" +
+        "  - Low Blood Cell Counts (Neutropenia, Anemia).\n" +
+        "  - Nausea and Vomiting control.\n" +
+        "  - Survivorship Care for late and long-term effects.\n" +
+        "These guidelines serve as an educational dialogue tool to prepare questions for your healthcare team, not a substitute for an individual treatment plan.",
+    },
+  },
+  {
+    id: "baheya-egypt-patient-journey",
+    organization: "مؤسسة بهية",
+    title: {
+      ar: "مؤسسة بهية: خطوات حجز موعد كشف، الفروع، وشروط الأهلية",
+      en: "Baheya Foundation: Booking Steps, Branches, and Eligibility Criteria",
+    },
+    url: "https://baheya.org/ar/media_article/320",
+    citationLabel: { ar: "[مؤسسة بهية — حجز الكشف]", en: "[Baheya — Booking & Journey]" },
+    keywords: [
+      "Bahya", "baheya", "بهية", "Egypt", "مصر", "Giza", "Zayed", "Harām", "Haram", "علوبة",
+      "booking", "appointment", "حجز", "موعد", "مواعيد", "hotline", "16602", "خط ساخن",
+      "branches", "فروع", "address", "عنوان", "الهرم", "الشيخ زايد",
+      "screening", "early detection", "كشف", "مبكر", "جراحة", "شروط", "أهلية", "سن", "تاريخ وراثي", "أعراض", "بطاقة", "مجانا", "مجانًا",
+    ],
+    content: {
+      ar: "مؤسسة بهية هي صرح مصري خيري متخصص في الاكتشاف المبكر وعلاج سرطان الثدي ودعم المحاربات بالمجان تماماً («بهية في ظهر كل ست مصرية» / «إنتِ مش لوحدك»):\n" +
+        "• خطوات حجز موعد كشف: الاتصال بالخط الساخن 16602 من الأحد إلى الخميس من 9 صباحاً إلى 5 مساءً. يقوم ممثل خدمة العملاء بالرد وطرح أسئلة لتحديد الحالة ثم توجيه المتصلة إلى الكشف المبكر أو عيادة الجراحة حسب المتاح.\n" +
+        "• شروط حجز موعد للكشف المبكر (دون وجود أعراض):\n" +
+        "  - العمر 35 سنة فأكثر في حال وجود تاريخ وراثي للمرض في العائلة.\n" +
+        "  - العمر 40 سنة فأكثر في حال عدم وجود تاريخ وراثي.\n" +
+        "• شروط حجز عيادة الجراحة:\n" +
+        "  - عند ظهور أعراض (مثل وجود كتلة، إفرازات غير طبيعية، تغير في الحلمة أو الجلد).\n" +
+        "  - العمر 25 سنة فما فوق.\n" +
+        "• المستندات المطلوبة يوم الكشف: بطاقة الرقم القومي (البطاقة الشخصية) سارية.\n" +
+        "• الفروع الرئيسية:\n" +
+        "  - مركز بهية الهرم: 4 شارع علوبة، متفرع من أول شارع الهرم بجوار داري، الجيزة.\n" +
+        "  - مستشفى بهية الشيخ زايد: قطعة 40، الحي الأول، الشيخ زايد، أمام كلية الهندسة.\n" +
+        "جميع الفحوصات والتشخيص والعلاجات المتقدمة (جراحة، كيماوي، إشعاعي، هرموني، وتأهيل طبيعي) تقدم بالمجان 100%.",
+      en: "Bahya Foundation is an Egyptian non-profit hospital specializing in early detection, free breast cancer treatment, and comprehensive support for women (\"Bahya stands behind every Egyptian woman\" / \"You are not alone\"):\n" +
+        "• Booking Steps: Call the official hotline 16602, Sunday through Thursday, 9 AM to 5 PM. A customer service representative will evaluate your case through questions and route you to either Early Screening or the Surgery Clinic.\n" +
+        "• Early Screening Eligibility (No symptoms present):\n" +
+        "  - Age 35+ with a family/hereditary history of breast cancer.\n" +
+        "  - Age 40+ without family history.\n" +
+        "• Surgery Clinic Eligibility:\n" +
+        "  - When symptoms are present (lump, discharge, nipple/skin changes).\n" +
+        "  - Age 25 and older.\n" +
+        "• Required Documents on visit day: Valid National ID card (بطاقة الرقم القومي).\n" +
+        "• Main Branches:\n" +
+        "  - Bahya Haram Center: 4 Alouba St., off beginning of Haram St., next to Dari, Giza.\n" +
+        "  - Bahya Sheikh Zayed Hospital: Plot 40, First District, Sheikh Zayed, in front of Faculty of Engineering.\n" +
+        "All screening, surgeries, chemotherapy, radiotherapy, hormone therapy, and physical therapy are 100% free of charge.",
+    },
+  },
+  {
+    id: "asco-survivorship-guidelines",
+    organization: "American Society of Clinical Oncology",
+    title: {
+      ar: "الجمعية الأمريكية لعلم الأورام السريري (ASCO): إرشادات رعاية الناجيات من السرطان",
+      en: "American Society of Clinical Oncology (ASCO): Guidelines on Survivorship Care",
+    },
+    url: "https://www.asco.org/news-initiatives/current-initiatives/cancer-care-initiatives/prevention-survivorship/survivorship-compendium/guidelines",
+    citationLabel: { ar: "[الجمعية الأمريكية لعلم الأورام — ASCO]", en: "[ASCO — Survivorship Guidelines]" },
+    keywords: [
+      "asco", "survivorship", "guidelines", "fatigue", "anxiety", "depression", "neuropathy", "cipn", "surveillance", "recurrence", "mammography", "fertility", "follow-up",
+      "الجمعية الأمريكية للأورام", "إرشادات رعاية الناجيات", "متابعة بعد العلاج", "الإرهاق", "القلق", "الاكتئاب", "الاعتلال العصبي", "تنميل الأطراف", "عودة المرض", "الماموجرام", "الخصوبة", "فحوصات دورية",
+    ],
+    content: {
+      ar: "تضع الجمعية الأمريكية لعلم الأورام السريري (ASCO) إرشادات إكلينيكية مبنية على الأدلة لرعاية الناجيات من سرطان الثدي بعد انتهاء العلاج الأساسي:\n" +
+        "1. فحص وإدارة الآثار الجانبية المتأخرة وطويلة المدى:\n" +
+        "  - تقييم وإدارة الإرهاق المرتبط بالسرطان (Cancer-Related Fatigue) عبر النشاط البدني المعتدل والدعم النفسي والنوم الصحي.\n" +
+        "  - تقييم ورعاية أعراض القلق والاكتئاب والضغوط النفسية للناجيات من خلال الاستشارات المتخصصة.\n" +
+        "  - الوقاية من الاعتلال العصبي المحيطي الناتج عن العلاج الكيميائي (CIPN) وإدارته مثل تنميل ووخز الأطراف.\n" +
+        "2. خطة مراقبة عدم عودة الورم (Surveillance for Recurrence):\n" +
+        "  - إجراء الفحص السريري للثدي والتاريخ المرضي الدوري كل 3 إلى 6 أشهر في السنوات الأولى ثم كل 6 إلى 12 شهراً.\n" +
+        "  - إجراء تصوير الماموجرام السنوي المنتظم لمتابعة صحة الثدي.\n" +
+        "3. الحفاظ على الخصوبة وتنظيم الأسرة للمريضات الشابات وتنسيق خطة رعاية الناجيات المكتوبة بين أطباء الأورام وأطباء الرعاية الأولية.\n" +
+        "هذه الإرشادات تساعد المحاربة على مناقشة خطة متابعتها مع طبيبها المعالج.",
+      en: "ASCO provides evidence-based clinical practice guidelines for long-term screening, surveillance, and symptom management for cancer survivors:\n" +
+        "1. Screening and management of late and long-term effects:\n" +
+        "  - Screening, assessment, and management of Cancer-Related Fatigue through moderate physical activity, psychosocial support, and sleep hygiene.\n" +
+        "  - Screening, assessment, and care of Anxiety and Depressive symptoms in adults with cancer.\n" +
+        "  - Prevention and management of Chemotherapy-Induced Peripheral Neuropathy (CIPN), such as numbness and tingling in extremities.\n" +
+        "2. Surveillance for Cancer Recurrence:\n" +
+        "  - Regular clinical breast examinations and history every 3–6 months for the first years, then every 6–12 months.\n" +
+        "  - Annual surveillance mammography.\n" +
+        "3. Fertility preservation and survivorship care coordination between oncology teams and primary care.\n" +
+        "These guidelines provide a structured framework for post-treatment survivorship care discussions with your doctor.",
+    },
+  },
   {
     id: "who-breast-cancer",
     organization: "World Health Organization",
     title: {
-      ar: "منظمة الصحة العالمية: سرطان الثدي",
-      en: "World Health Organization: Breast cancer",
+      ar: "منظمة الصحة العالمية: سرطان الثدي والتأهيل الشامل",
+      en: "World Health Organization: Breast Cancer & Rehabilitation",
     },
     url: "https://www.who.int/news-room/fact-sheets/detail/breast-cancer",
     citationLabel: { ar: "[منظمة الصحة العالمية]", en: "[WHO]" },
     keywords: [
-      "aftercare", "follow up", "follow-up", "recovery", "rehabilitation", "support",
-      "الرعاية", "المتابعة", "التعافي", "التأهيل", "الدعم", "كتلة", "جرح",
+      "aftercare", "follow up", "follow-up", "recovery", "rehabilitation", "support", "lump", "wound",
+      "الرعاية", "المتابعة", "التعافي", "التأهيل", "الدعم", "كتلة", "جرح", "الصحة العالمية",
     ],
     content: {
-      ar: "تؤكد منظمة الصحة العالمية أن الرعاية الشاملة بعد علاج سرطان الثدي قد تشمل التأهيل والدعم النفسي والتغذوي ومشاركة فريق متعدد التخصصات. أي كتلة غير طبيعية أو جرح في الثدي لا يلتئم يحتاج إلى تقييم طبي، ولا ينبغي أن يحل التثقيف الصحي محل التقييم السريري.",
-      en: "WHO notes that comprehensive breast-cancer care can include rehabilitation, psychosocial and nutritional support, and a multidisciplinary team. An abnormal breast lump or a breast wound that does not heal needs medical evaluation; patient education does not replace clinical assessment.",
-    },
-  },
-  {
-    id: "nci-breast-survivorship",
-    organization: "National Cancer Institute",
-    title: {
-      ar: "المعهد الوطني للسرطان: الحياة بعد علاج سرطان الثدي",
-      en: "National Cancer Institute: Breast Cancer Survivorship",
-    },
-    url: "https://www.cancer.gov/types/breast/breast-cancer-survivorship",
-    citationLabel: { ar: "[المعهد الوطني للسرطان]", en: "[NCI]" },
-    keywords: [
-      "survivorship", "survivor", "follow-up", "late effects", "lymphedema", "recurrence", "body image", "fertility", "الناجية", "بعد العلاج", "متابعة", "آثار متأخرة", "الوذمة اللمفية", "عودة المرض", "صورة الجسم", "خصوبة",
-    ],
-    content: {
-      ar: "يوفر المعهد الوطني للسرطان معلومات عامة لمن يعشن بعد علاج سرطان الثدي، وتشمل زيارات المتابعة والفحوصات وخطط رعاية الناجيات والآثار الجسدية والعاطفية المتأخرة مثل الوذمة اللمفية والقلق وتغير صورة الجسم. تختلف خطة المتابعة حسب الحالة، لذلك ينبغي مناقشة التفاصيل مع فريق الرعاية.",
-      en: "The National Cancer Institute provides patient education for people living after breast-cancer treatment, including follow-up visits and tests, survivorship care plans, and physical and emotional late effects such as lymphedema, anxiety, and body-image changes. Follow-up varies by individual situation and should be discussed with the care team.",
+      ar: "تؤكد منظمة الصحة العالمية أن الرعاية الشاملة لسرطان الثدي تشمل التشخيص المبكر، الجراحة، والعلاجات الدوائية والإشعاعية، بالإضافة إلى التأهيل البدني والدعم النفسي والتغذوي بمشاركة فريق متعدد التخصصات. أي كتلة غير طبيعية أو تغير في جلد أو حلمة الثدي يستوجب تقييماً طبياً فورياً.",
+      en: "WHO notes that comprehensive breast cancer care integrates early detection, surgery, radiation and systemic therapies, alongside physical rehabilitation and psychosocial support from a multidisciplinary team. Any abnormal breast lump or skin change requires prompt clinical evaluation.",
     },
   },
   {
@@ -61,8 +242,8 @@ export const MEDICAL_SOURCES: MedicalSource[] = [
     citationLabel: { ar: "[المعهد الوطني للسرطان — المتابعة]", en: "[NCI — follow-up care]" },
     keywords: ["follow-up care", "care plan", "treatment summary", "متابعة بعد العلاج", "خطة الرعاية", "ملخص العلاج", "فحوصات"],
     content: {
-      ar: "بعد انتهاء العلاج قد تشمل المتابعة زيارات دورية وفحوصات وملخصًا للعلاج وخطة لرعاية الناجية. يعتمد توقيت الفحوصات وما يلزم منها على نوع السرطان والعلاجات السابقة والحالة الفردية، ويحدده فريق الرعاية.",
-      en: "After treatment, follow-up may include periodic visits and tests, a treatment summary, and a survivorship care plan. The timing and type of follow-up depend on the cancer, previous treatments, and individual situation, and are determined with the care team.",
+      ar: "بعد انتهاء العلاج تشمل المتابعة زيارات دورية وفحوصات منتظمة وملخصاً للعلاج وخطة لرعاية الناجية. يعتمد جدول الفحوصات على نوع ومرحلة السرطان والعلاجات السابقة والحالة الفردية ويحدده الفريق الطبي المعالج.",
+      en: "After treatment, follow-up includes periodic visits, diagnostic tests, a treatment summary, and a survivorship care plan tailored to the cancer type, stage, previous therapies, and individual needs.",
     },
   },
   {
@@ -72,50 +253,20 @@ export const MEDICAL_SOURCES: MedicalSource[] = [
       ar: "الجمعية الأمريكية للسرطان: الحياة بعد علاج سرطان الثدي",
       en: "American Cancer Society: Living as a Breast Cancer Survivor",
     },
-    url: "https://www.cancer.org/cancer/types/breast-cancer/living-as-a-breast-cancer-survivor.html",
+    url: "https://www.cancer.gov/types/breast/breast-cancer-survivorship",
     citationLabel: { ar: "[الجمعية الأمريكية للسرطان]", en: "[American Cancer Society]" },
     keywords: ["american cancer society", "survivor", "survivorship", "long-term side effects", "follow-up", "breastfeeding", "pregnancy", "الجمعية الأمريكية", "آثار جانبية طويلة", "حمل", "رضاعة", "دعم"],
     content: {
-      ar: "تشرح الجمعية الأمريكية للسرطان موضوعات الحياة بعد علاج سرطان الثدي، مثل المتابعة والآثار الجانبية طويلة المدى والصحة النفسية وصورة الجسم والخصوبة والحمل والدعم والأسئلة التي يمكن مناقشتها مع فريق الرعاية. هذه معلومات تثقيفية عامة وليست خطة علاج شخصية.",
-      en: "The American Cancer Society discusses life after breast-cancer treatment, including follow-up, long-term side effects, emotional health, body image, fertility, pregnancy, support, and questions to discuss with the care team. This is general education, not an individual treatment plan.",
-    },
-  },
-  {
-    id: "asco-survivorship-guidelines",
-    organization: "American Society of Clinical Oncology",
-    title: {
-      ar: "الجمعية الأمريكية لعلم الأورام: إرشادات رعاية الناجيات",
-      en: "ASCO: Breast Cancer Follow-up and Survivorship Guidelines",
-    },
-    url: "https://www.asco.org/news-initiatives/current-initiatives/cancer-care-initiatives/prevention-survivorship/survivorship-compendium/guidelines",
-    citationLabel: { ar: "[الجمعية الأمريكية لعلم الأورام]", en: "[ASCO]" },
-    keywords: ["asco", "clinical guideline", "survivorship care", "follow-up guideline", "إرشادات الأورام", "رعاية الناجيات", "متابعة سريرية"],
-    content: {
-      ar: "تجمع الجمعية الأمريكية لعلم الأورام إرشادات رعاية الناجيات والمتابعة بعد العلاج، بما في ذلك التواصل بين فريق الأورام والرعاية الأولية وتقييم الأعراض والآثار طويلة المدى وخطة الرعاية. تُستخدم هذه المعلومات لفهم موضوعات النقاش مع الطبيب وليست بديلًا عن التقييم الفردي.",
-      en: "ASCO survivorship resources address follow-up after treatment, communication between oncology and primary-care teams, assessment of symptoms and long-term effects, and survivorship care planning. They help patients understand topics to discuss with clinicians and are not a substitute for individual assessment.",
-    },
-  },
-  {
-    id: "nccn-breast-cancer-patient-resources",
-    organization: "National Comprehensive Cancer Network",
-    title: {
-      ar: "شبكة NCCN: موارد مرضى سرطان الثدي",
-      en: "NCCN: Breast Cancer Resources for Patients",
-    },
-    url: "https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients/breast-cancer-resources",
-    citationLabel: { ar: "[إرشادات NCCN للمرضى]", en: "[NCCN Patient Guidelines]" },
-    keywords: ["nccn", "patient guideline", "dcis", "invasive breast cancer", "metastatic", "مراحل سرطان الثدي", "إرشادات المرضى", "سرطان منتشر"],
-    content: {
-      ar: "تقدم شبكة NCCN موارد وإرشادات للمرضى بلغة مبسطة حول أنواع ومراحل مختلفة من سرطان الثدي، لمساعدة المريضة ومقدم الرعاية على فهم المصطلحات والاستعداد للحوار مع الطبيب. يجب الرجوع إلى النسخة الحالية ومناقشة القرارات الشخصية مع فريق الأورام.",
-      en: "NCCN provides patient resources and plain-language guidelines for different breast-cancer types and stages, helping patients and caregivers understand terms and prepare for conversations with clinicians. Use the current version and discuss personal decisions with the oncology team.",
+      ar: "توضح الجمعية الأمريكية للسرطان سبل التعامل مع الآثار طويلة المدى بعد علاج سرطان الثدي مثل الوذمة اللمفية (Lymphedema)، وتغيرات صورة الجسم، والخصوبة، والدعم النفسي والاجتماعي، وأهمية ممارسة الرياضة المناسبة والتغذية المتوازنة.",
+      en: "ACS discusses living after breast cancer treatment, managing long-term side effects including lymphedema, body-image adjustments, fertility, psychological support, and adopting a healthy lifestyle.",
     },
   },
   {
     id: "nci-treatment-overview",
     organization: "National Cancer Institute",
     title: {
-      ar: "المعهد الوطني للسرطان: علاج سرطان الثدي",
-      en: "National Cancer Institute: Breast Cancer Treatment",
+      ar: "المعهد الوطني للسرطان: نظرة عامة على علاج سرطان الثدي",
+      en: "National Cancer Institute: Breast Cancer Treatment Overview",
     },
     url: "https://www.cancer.gov/types/breast/treatment",
     citationLabel: { ar: "[المعهد الوطني للسرطان]", en: "[NCI]" },
@@ -124,80 +275,53 @@ export const MEDICAL_SOURCES: MedicalSource[] = [
       "علاج", "جراحة", "إشعاع", "كيميائي", "هرموني", "موجّه", "مناعي",
     ],
     content: {
-      ar: "يوضح المعهد الوطني للسرطان أن خطط علاج سرطان الثدي تختلف حسب النوع والمرحلة، وقد تجمع بين علاجات موضعية مثل الجراحة أو الإشعاع وعلاجات جهازية مثل العلاج الكيميائي أو الهرموني أو الموجّه. اختيار العلاج شخصي ويُتخذ مع فريق رعاية السرطان.",
-      en: "NCI explains that breast-cancer plans vary by cancer type and stage and can combine local treatments, such as surgery or radiation, with systemic treatments, such as chemotherapy, hormone therapy, targeted therapy, or immunotherapy. Treatment choices are individualized with the cancer care team.",
-    },
-  },
-  {
-    id: "nci-infection-neutropenia",
-    organization: "National Cancer Institute",
-    title: {
-      ar: "المعهد الوطني للسرطان: العدوى ونقص العدلات أثناء علاج السرطان",
-      en: "National Cancer Institute: Infection and Neutropenia during Cancer Treatment",
-    },
-    url: "https://www.cancer.gov/about-cancer/treatment/side-effects/infection",
-    citationLabel: { ar: "[المعهد الوطني للسرطان]", en: "[NCI]" },
-    keywords: [
-      "fever", "temperature", "infection", "chills", "redness", "swelling", "wound", "drainage", "pus", "pain", "breathing",
-      "حمى", "حرارة", "عدوى", "قشعريرة", "احمرار", "تورم", "جرح", "إفراز", "صديد", "ألم", "تنفس",
-    ],
-    content: {
-      ar: "يذكر المعهد الوطني للسرطان أن الحمى بدرجة 38° مئوية أو أعلى، أو القشعريرة، أو الاحمرار أو التورم قد تكون علامات عدوى أثناء علاج السرطان. العدوى قد تكون مهددة للحياة، لذا ينبغي الاتصال بفريق الرعاية الصحية عند ظهور علامات العدوى، وعدم الاعتماد على خافض حرارة لإخفاء الأعراض قبل استشارة الفريق.",
-      en: "NCI lists fever of 38°C (100.5°F) or higher, chills, and redness or swelling among possible infection signs during cancer treatment. Infection can be life-threatening, so patients should contact their care team if signs occur and should not rely on fever-reducing medicine to mask symptoms before speaking with the team.",
-    },
-  },
-  {
-    id: "nccn-patient-guidelines",
-    organization: "National Comprehensive Cancer Network",
-    title: {
-      ar: "شبكة NCCN: إرشادات المرضى",
-      en: "NCCN Guidelines for Patients",
-    },
-    url: "https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients",
-    citationLabel: { ar: "[إرشادات NCCN للمرضى]", en: "[NCCN Patient Guidelines]" },
-    keywords: [
-      "guidelines", "questions", "care team", "decision", "plan", "patient", "إرشادات", "أسئلة", "فريق", "قرار", "خطة", "مريض",
-    ],
-    content: {
-      ar: "تقدم إرشادات NCCN للمرضى معلومات من الخبراء بلغة مبسطة لمساعدة المرضى ومقدمي الرعاية على مناقشة الخيارات مع الأطباء. هي مورد للتحضير للحوار الطبي وليست بديلاً عن خطة الرعاية الفردية.",
-      en: "NCCN Guidelines for Patients present expert information in plain language to help people with cancer and caregivers discuss options with clinicians. They are a resource for preparing a medical conversation, not a substitute for an individual care plan.",
-    },
-  },
-  {
-    id: "baheya-egypt-patient-journey",
-    organization: "Bahya Foundation Egypt",
-    title: {
-      ar: "مؤسسة بهية: رحلة المحاربة، الفروع، الحجز، والخدمات الداعمة",
-      en: "Bahya Foundation Egypt: Patient journey, branches, booking, and support services",
-    },
-    url: "https://baheya.org/ar",
-    citationLabel: { ar: "[مؤسسة بهية]", en: "[Bahya]" },
-    keywords: [
-      "Bahya", "baheya", "بهية", "Egypt", "مصر", "Giza", "Zayed", "Harām", "Haram",
-      "booking", "appointment", "حجز", "موعد", "hotline", "16602", "خط ساخن", "خط",
-      "branches", "فروع", "address", "عنوان", "location", "موقع",
-      "support", "نفس", "دعم", "psychological", "psycho",
-      "physiotherapy", "rehabilitation", "علاج طبيعي", "تأهيل", "تاهيل", "إعادة",
-      "journey", "رحلة", "free", "مجانا", "مجانًا", "cost", "تكلفة", "donation", "تبرع",
-      "screening", "early detection", "كشف", "مبكر",
-    ],
-    content: {
-      ar: "مؤسسة بهية هي مؤسسة مصرية غير ربحية متخصصة في الاكتشاف المبكر وعلاج سرطان الثدي ودعم المحاربات من السيدات. الكشف والعلاج يُقدمان مجاناً، والدعم لا يقتصر على العلاج الطبي بل يشمل رحلة كاملة تمتد لما يصل إلى 10 سنوات. للحجز أو الاستفسار، يُتصل بالخط الساخن 16602 من الأحد إلى الخميس من 9 صباحاً إلى 5 مساءً. يمثل خدمة العملاء يطرح أسئلة لتقييم الحالة ثم يوجّه المحاربة إلى الكشف المبكر أو عيادة الجراحة. شروط الكشف المبكر: عمر 40 سنة فأكثر عند عدم وجود تاريخ وراثي، أو 35 فأكثر عند وجود تاريخ وراثي، دون أعراض ظاهرة؛ وإذا ظهرت أعراض فالفئة من 25 سنة فأكثر. أبرز الفروع: مستشفى بهية بالعجوزة (4 شارع علوبة متفرع من شارع الهرم، الجيزة) وفرع الشيخ زايد (الحي الأول، الشيخ زايد). تشمل خدمات بهية: الكشف المبكر بأحدث الأجهزة، الجراحة، العلاج الكيميائي والإشعاعي والهرموني، العلاج الطبيعي لإعادة تأهيل المحاربة بعد العمليات واستعادة حركة الذراع، وقسم دعم نفسي يعمل على رفع الروح المعنوية وتحسين جودة الحياة كجزء أساسي من رحلة العلاج. رسائل المؤسسة للمحاربات: «إنتِ مش لوحدك» و«بهية في ظهر كل ست مصرية». أي استفسار عن المواعيد أو الأهلية أو التكلفة يجب توجيهه رسمياً عبر الخط الساخن 16602.",
-      en: "Bahya Foundation is a non-profit Egyptian institution specializing in early detection, treatment, and support for women facing breast cancer. Exams and treatment are provided free of charge, and support follows the patient through a journey that can span up to 10 years. For booking or inquiries, call the hotline 16602, Sunday through Thursday, 9 AM to 5 PM. A representative asks screening questions and refers the patient to early-detection screening or the surgery clinic. Early-detection eligibility: age 40+ without hereditary history, or 35+ with hereditary history, and no symptoms; with symptoms, eligibility starts at age 25. Main branches: Bahya Hospital in Agouza (4 Alouba St., off Haram St., Giza) and the Sheikh Zayed branch (First District, Sheikh Zayed). Services include modern early-detection imaging, surgery, chemotherapy, radiotherapy and hormone therapy, physiotherapy to restore arm movement after surgery, and a dedicated psychosocial support department that boosts morale and quality of life as part of the treatment journey. Bahya's messages to its patients: \"You are not alone\" and \"Bahya stands behind every Egyptian woman.\" Any question about appointments, eligibility, or costs should be directed officially through the hotline 16602.",
+      ar: "يوضح المعهد الوطني للسرطان أن علاج سرطان الثدي يُصمم حسب النوع والخصائص البيولوجية للمرض والمرحلة، ويشمل مزيجاً من العلاجات الموضعية (الجراحة والإشعاع) والعلاجات الجهازية (العلاج الكيميائي، الهرموني، الموجّه، والمناعي).",
+      en: "NCI explains that breast cancer treatment is tailored based on stage and biological characteristics, combining local therapies (surgery, radiotherapy) and systemic therapies (chemotherapy, endocrine therapy, targeted therapy, immunotherapy).",
     },
   },
 ];
 
 export function retrieveMedicalSources(query: string, limit = 3): MedicalSource[] {
   const normalizedQuery = query.toLowerCase();
-  if (/حمى|حرارة|قشعريرة|عدوى|infection|fever|chills|redness|swelling|جرح|إفراز/i.test(normalizedQuery)) {
+
+  // Safety & Urgent symptoms: fever, chills, infection, catheter, wound, drainage
+  if (/حمى|حمي|حرارة|سخونية|قشعريرة|عدوى|التهاب|صديد|إفراز|افراز|جرح|قسطرة|بورت|fever|chills|infection|redness|swelling|wound|drainage|pus|catheter|port/i.test(normalizedQuery)) {
     const safetySource = MEDICAL_SOURCES.find(source => source.id === "nci-infection-neutropenia");
     return safetySource ? [safetySource] : MEDICAL_SOURCES.slice(0, 1);
   }
-  if (/بعد\s*(انتهاء|إكمال)?\s*(العلاج|الجرعات)|المتابع(?:ة|ات)|رعاية\s*(الناجيات|ما بعد العلاج)|follow[- ]?up|survivorship|after\s*treatment/i.test(normalizedQuery)) {
-    const survivorshipIds = new Set(["nci-follow-up-care", "acs-breast-survivorship"]);
-    return MEDICAL_SOURCES.filter(source => survivorshipIds.has(source.id)).slice(0, Math.min(limit, 2));
+
+  // Baheya booking, branches, phone number 16602, eligibility, early screening vs surgery clinic
+  if (/بهية|bahya|baheya|16602|حجز|احجز|موعد|مواعيد|فرع|فروع|الهرم|الشيخ زايد|علوبة|كشف مبكر|عيادة الجراحة|تاريخ وراثي|شروط الحجز|booking|appointment|hotline/i.test(normalizedQuery)) {
+    const bookingSource = MEDICAL_SOURCES.find(source => source.id === "baheya-egypt-patient-journey");
+    const supportSource = MEDICAL_SOURCES.find(source => source.id === "baheya-psychosocial-volunteering");
+    if (/دعم\s*نفسي|تطوع|بوتيك|ورش|خياطة|قلق|اكتئاب|صدمة|psychosocial|support|volunteer|boutique/i.test(normalizedQuery)) {
+      return supportSource && bookingSource ? [supportSource, bookingSource] : [supportSource || bookingSource || MEDICAL_SOURCES[0]];
+    }
+    return bookingSource ? [bookingSource] : MEDICAL_SOURCES.slice(0, 1);
   }
+
+  // Psychosocial support, emotional wellbeing, Baheya support services, boutique, volunteering
+  if (/دعم\s*نفسي|دعم\s*معنوي|استشارة|جلسات|قلق|خوف|خايفة|اكتئاب|صدمة|حزن|بوتيك|تطوع|ورش|خياطة|ترفيه|رحلات|زيارات منزلية|تمكين|psychosocial|counseling|anxiety|depression|distress|boutique|volunteer/i.test(normalizedQuery)) {
+    const supportSource = MEDICAL_SOURCES.find(source => source.id === "baheya-psychosocial-volunteering");
+    const ascoSource = MEDICAL_SOURCES.find(source => source.id === "asco-survivorship-guidelines");
+    const matched = [supportSource, ascoSource].filter((s): s is MedicalSource => Boolean(s));
+    return matched.length ? matched.slice(0, limit) : MEDICAL_SOURCES.slice(0, 1);
+  }
+
+  // Survivorship, post-treatment, neuropathy (CIPN), fatigue, recurrence monitoring
+  if (/بعد\s*(انتهاء|إكمال)?\s*(العلاج|الجرعات|الكيماوي)|المتابع(?:ة|ات)|رعاية\s*(الناجيات|ما بعد العلاج)|تنميل|اعتلال عصبي|إرهاق|تعب|عودة الورم|ماموجرام سنوي|follow[- ]?up|survivorship|after\s*treatment|neuropathy|cipn|fatigue|recurrence/i.test(normalizedQuery)) {
+    const survivorshipIds = new Set(["asco-survivorship-guidelines", "nci-follow-up-care", "acs-breast-survivorship"]);
+    const found = MEDICAL_SOURCES.filter(source => survivorshipIds.has(source.id));
+    return found.length ? found.slice(0, Math.min(limit, 2)) : MEDICAL_SOURCES.slice(0, 2);
+  }
+
+  // Breast cancer stages & types (DCIS, invasive, inflammatory, metastatic) or NCCN guidelines
+  if (/dcis|موضعي|ارتشاحي|غازي|التهابي|نقيلي|منتشر|مراحل|أنواع سرطان الثدي|nccn|guidelines|إرشادات/i.test(normalizedQuery)) {
+    const nccnSource = MEDICAL_SOURCES.find(source => source.id === "nccn-patient-guidelines");
+    return nccnSource ? [nccnSource] : MEDICAL_SOURCES.slice(0, 1);
+  }
+
+  // General ranking by keyword overlap
   const ranked = MEDICAL_SOURCES.map(source => ({
     source,
     score: source.keywords.reduce(

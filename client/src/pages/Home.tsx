@@ -83,14 +83,16 @@ export default function Home() {
   const alternateLanguage = language === "en" ? "ar" : "en";
   const isArabic = language === "ar";
 
-  const goToChat = () => navigate(`${baseUrl}/chat?lang=${language}`);
+  const goToChat = () => navigate(`/chat?lang=${language}`);
   const scrollTo = (id: string) => {
     setIsMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
   const changeLanguage = (nextLanguage: "ar" | "en") => {
     setLanguage(nextLanguage);
-    window.history.replaceState({}, "", `${baseUrl}/?lang=${nextLanguage}`);
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("lang", nextLanguage);
+    window.history.replaceState({}, "", `${window.location.pathname}?${searchParams.toString()}`);
   };
 
   return (
@@ -98,7 +100,7 @@ export default function Home() {
       <div className="medical-grid min-h-screen">
         <header className="container relative py-6">
           <div className="flex items-center justify-between">
-            <button onClick={() => navigate(`${baseUrl}/?lang=${language}`)} className="flex items-center gap-3 text-start" aria-label="BreastCancerCare AI home">
+            <button onClick={() => navigate(`/?lang=${language}`)} className="flex items-center gap-3 text-start" aria-label="BreastCancerCare AI home">
               <span className="flex size-10 items-center justify-center rounded-2xl bg-teal-700 text-white shadow-[0_8px_20px_-8px_rgba(15,118,110,0.8)]"><HeartHandshake className="size-5" /></span>
               <span>
                 <strong className="font-display block text-base tracking-tight">BreastCancerCare</strong>
@@ -108,11 +110,11 @@ export default function Home() {
 
             {/* Desktop Navigation */}
             <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 md:flex">
-              <button onClick={() => navigate(`${baseUrl}/about?lang=${language}`)} className="transition hover:text-teal-700">{t.navAbout}</button>
+              <button onClick={() => navigate(`/about?lang=${language}`)} className="transition hover:text-teal-700">{t.navAbout}</button>
               <button onClick={() => scrollTo("scope")} className="transition hover:text-teal-700">{t.navScope}</button>
               <button onClick={() => scrollTo("sources")} className="transition hover:text-teal-700">{t.navSources}</button>
-              <button onClick={() => navigate(`${baseUrl}/rag?lang=${language}`)} className="transition hover:text-teal-700">{t.navPipeline}</button>
-              <button onClick={() => navigate(`${baseUrl}/services?lang=${language}`)} className="transition hover:text-teal-700">{t.navLocal}</button>
+              <button onClick={() => navigate(`/rag?lang=${language}`)} className="transition hover:text-teal-700">{t.navPipeline}</button>
+              <button onClick={() => navigate(`/services?lang=${language}`)} className="transition hover:text-teal-700">{t.navLocal}</button>
             </nav>
 
             <div className="flex items-center gap-2">
@@ -134,11 +136,11 @@ export default function Home() {
           {/* Mobile Navigation Dropdown Menu */}
           {isMenuOpen && (
             <nav className="mt-4 flex flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white/95 p-4 text-start shadow-lg backdrop-blur md:hidden">
-              <button onClick={() => { setIsMenuOpen(false); navigate(`${baseUrl}/about?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navAbout}</button>
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/about?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navAbout}</button>
               <button onClick={() => scrollTo("scope")} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navScope}</button>
               <button onClick={() => scrollTo("sources")} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navSources}</button>
-              <button onClick={() => { setIsMenuOpen(false); navigate(`${baseUrl}/rag?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navPipeline}</button>
-              <button onClick={() => { setIsMenuOpen(false); navigate(`${baseUrl}/services?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navLocal}</button>
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/rag?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navPipeline}</button>
+              <button onClick={() => { setIsMenuOpen(false); navigate(`/services?lang=${language}`); }} className="rounded-xl px-3 py-2 text-start text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-800">{t.navLocal}</button>
             </nav>
           )}
         </header>

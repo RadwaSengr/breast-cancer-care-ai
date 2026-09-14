@@ -93,11 +93,67 @@ export default function LocalServices() {
   const t = copy[language];
   const isArabic = language === "ar";
 
+  const [userAge, setUserAge] = useState<number | "">("");
+  const [hasSymptoms, setHasSymptoms] = useState<boolean | null>(null);
+  const [hasFamilyHistory, setHasFamilyHistory] = useState<boolean | null>(null);
+
   const changeLanguage = () => {
     const next = language === "en" ? "ar" : "en";
     setLanguage(next);
-    window.history.replaceState({}, "", `/services?lang=${next}`);
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("lang", next);
+    window.history.replaceState({}, "", `${window.location.pathname}?${searchParams.toString()}`);
   };
+
+  const getRecommendation = () => {
+    if (hasSymptoms === true) {
+      return {
+        badge: isArabic ? "تحويل فوري لعيادة الجراحة" : "Surgery Clinic Assessment",
+        title: isArabic ? "يُنصح بفحص سريري مباشر في عيادة الجراحة" : "Clinical examination at surgery clinic recommended",
+        description: isArabic
+          ? "عند ظهور أي أعراض (مثل كتلة ملموسة، تغيرات في شكل أو جلد الثدي، أو إفرازات)، يتم الحجز مباشرة لعيادة الجراحة في بهية لإجراء الفحص الطبي الدقيق. اتصلي على 16602 لطلب الموعد."
+          : "When symptoms are present (such as a palpable lump, skin dimpling, or nipple discharge), referral goes directly to the surgery clinic for expert clinical evaluation. Call 16602 to request an appointment.",
+        color: "border-rose-300 bg-rose-50 text-rose-950",
+      };
+    }
+
+    if (userAge !== "" && userAge >= 40) {
+      return {
+        badge: isArabic ? "مؤهلة للكشف المبكر المجاني" : "Eligible for Free Screening",
+        title: isArabic ? "أنتِ مؤهلة لفحص الماموجرام الدوري المجاني" : "You qualify for free routine mammogram screening",
+        description: isArabic
+          ? "للسيدات من سن 40 سنة فما فوق دون أعراض، تقدم بهية فحص الماموجرام المجاني للكشف المبكر بشكل دوري ومنتظم. اتصلي على 16602 لتحديد موعدك."
+          : "Women aged 40 and older with no symptoms are eligible for Baheya's free routine early-detection mammograms. Call 16602 to schedule your screening.",
+        color: "border-teal-300 bg-teal-50 text-teal-950",
+      };
+    }
+
+    if (userAge !== "" && userAge >= 35 && hasFamilyHistory === true) {
+      return {
+        badge: isArabic ? "كشف مبكر للتاريخ العائلي" : "Family History Screening",
+        title: isArabic ? "مؤهلة لبدء الكشف المبكر الدوري من سن 35" : "Eligible for early screening at age 35 due to genetics",
+        description: isArabic
+          ? "نظراً لوجود تاريخ إصابة في العائلة من الدرجة الأولى (الأم، الأخت، الخالة، العمة)، يوصى ببدء الكشف المبكر الدوري مبكراً من سن 35 سنة في بهية. اتصلي على 16602."
+          : "With first-degree family history, early screening begins earlier at age 35. Call 16602 to speak with the scheduling team.",
+        color: "border-teal-300 bg-teal-50 text-teal-950",
+      };
+    }
+
+    if (userAge !== "" && userAge < 35 && hasSymptoms === false) {
+      return {
+        badge: isArabic ? "توعية ذاتية دورية" : "Self-Awareness Period",
+        title: isArabic ? "فحص الماموجرام الروتيني غير مطلوب حالياً" : "Routine mammograms are not routinely indicated",
+        description: isArabic
+          ? "الأنسجة في هذا العمر تكون ذات كثافة طبيعية وفحص الماموجرام الروتيني غير مطلوب دون أعراض. ينصح بالحفاظ على الفحص الذاتي الشهري ومراجعة الطبيب عند أي استفسار."
+          : "Routine screening mammograms are not typically indicated under age 35 without symptoms or high genetic risk. Maintain regular healthy breast self-awareness.",
+        color: "border-slate-300 bg-slate-50 text-slate-900",
+      };
+    }
+
+    return null;
+  };
+
+  const recommendation = getRecommendation();
 
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className={cn("brand-pink min-h-screen bg-[#fff8fb] text-slate-900", isArabic && "font-arabic")}>
@@ -110,7 +166,144 @@ export default function LocalServices() {
         <section className="mt-8 grid gap-6 lg:grid-cols-[1.12fr_0.88fr]"><article className="rounded-[1.5rem] border border-slate-100 bg-white p-6 shadow-sm sm:p-8"><p className="eyebrow"><CalendarCheck className="size-3.5" />{t.access}</p><h2 className="font-display mt-3 text-2xl font-semibold tracking-tight text-slate-950">{t.contact}</h2><p className="mt-3 leading-7 text-slate-600">{t.contactBody}</p><div className="mt-6 grid gap-3 sm:grid-cols-2"><a href={`tel:${bahyaLocalGuide.hotline}`} className="rounded-2xl border border-teal-100 bg-teal-50 p-4 transition hover:-translate-y-0.5 hover:border-teal-200"><Phone className="size-5 text-teal-800" /><p className="mt-3 font-display text-xl font-bold text-slate-900">{bahyaLocalGuide.hotline}</p><p className="mt-1 text-sm font-semibold text-teal-800">{t.call}</p></a><a href={`mailto:${bahyaLocalGuide.email}`} className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:border-teal-200"><Mail className="size-5 text-teal-800" /><p className="mt-3 break-all font-semibold text-slate-900">{bahyaLocalGuide.email}</p><p className="mt-1 text-sm font-semibold text-teal-800">{t.email}</p></a></div><div className="mt-5 flex flex-wrap items-center gap-3 text-sm"><span className="rounded-full bg-amber-50 px-3 py-1.5 font-semibold text-amber-900">{t.publishedHours}: {t.hoursValue}</span><SourceLink href={bahyaSources.booking} label={t.bookingLink} /></div></article>
           <article className="rounded-[1.5rem] border border-pink-100 bg-pink-50/60 p-6 shadow-sm sm:p-8"><p className="eyebrow"><HeartHandshake className="size-3.5" />{t.journey}</p><p className="mt-4 leading-7 text-slate-700">{t.journeyBody}</p><ol className="mt-6 space-y-4">{t.journeySteps.map((item, index) => <li key={item.step} className="flex gap-3"><span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-pink-700 text-xs font-bold text-white">{index + 1}</span><div><p className="text-sm font-bold text-slate-900">{item.step}</p><p className="pt-0.5 text-sm leading-6 text-slate-600">{item.detail}</p></div></li>)}</ol><p className="mt-6 rounded-2xl bg-white p-4 text-center text-sm font-semibold text-pink-900 italic">{t.careMessage}</p></article></section>
 
-        <section className="mt-10"><p className="eyebrow"><ShieldCheck className="size-3.5" />{t.eligibility}</p><p className="mt-3 max-w-3xl leading-7 text-slate-600">{t.eligibilityBody}</p><div className="mt-5 grid gap-4 md:grid-cols-3">{bahyaLocalGuide.screeningConditions[language].map(condition => <article key={condition.age} className="rounded-[1.5rem] border border-slate-100 bg-white p-6 shadow-sm"><p className="font-display text-3xl font-bold text-pink-800">{condition.age}</p><p className="mt-2 text-sm font-bold text-slate-800">{condition.history}</p><p className="mt-1.5 text-sm leading-6 text-slate-600">{condition.note}</p></article>)}</div><p className="mt-4 text-xs font-medium text-slate-500">{t.eligibilityNote}</p><SourceLink href={bahyaSources.booking} label={t.bookingLink} /></section>
+        <section className="mt-10">
+          <p className="eyebrow"><ShieldCheck className="size-3.5" />{t.eligibility}</p>
+          <p className="mt-3 max-w-3xl leading-7 text-slate-600">{t.eligibilityBody}</p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {bahyaLocalGuide.screeningConditions[language].map(condition => (
+              <article key={condition.age} className="rounded-[1.5rem] border border-slate-100 bg-white p-6 shadow-sm">
+                <p className="font-display text-3xl font-bold text-pink-800">{condition.age}</p>
+                <p className="mt-2 text-sm font-bold text-slate-800">{condition.history}</p>
+                <p className="mt-1.5 text-sm leading-6 text-slate-600">{condition.note}</p>
+              </article>
+            ))}
+          </div>
+
+          {/* Interactive Quick Eligibility Navigator */}
+          <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-teal-200 bg-gradient-to-br from-teal-50/50 via-white to-pink-50/40 p-6 shadow-sm sm:p-8">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-teal-800">
+              <Sparkles className="size-4 text-pink-600" />
+              <span>{isArabic ? "حاسبة التوجيه السريع للكشف في بهية" : "Interactive Screening Navigator"}</span>
+            </div>
+            <h3 className="font-display mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
+              {isArabic ? "حددي فئتكِ واعرفي الإجراء المناسب لكِ مباشرة" : "Find the right clinic pathway for your situation"}
+            </h3>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+              {isArabic
+                ? "أجيبي عن الأسئلة البسيطة أدناه للحصول على توجيه إرشادي فوري طبقاً لبروتوكول حجز مستشفيات بهية."
+                : "Answer the quick questions below to see the recommended pathway according to Baheya guidelines."}
+            </p>
+
+            <div className="mt-6 grid gap-6 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <label className="block text-xs font-bold text-slate-700 mb-2">
+                  {isArabic ? "١. العمر بالسنوات:" : "1. Your age (years):"}
+                </label>
+                <input
+                  type="number"
+                  min="18"
+                  max="95"
+                  placeholder={isArabic ? "مثال: 42" : "e.g., 42"}
+                  value={userAge}
+                  onChange={e => setUserAge(e.target.value === "" ? "" : Number(e.target.value))}
+                  className="w-full rounded-xl border border-slate-200 px-3.5 py-2 text-sm text-slate-900 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100"
+                />
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <label className="block text-xs font-bold text-slate-700 mb-2">
+                  {isArabic ? "٢. هل تشتكين من أعراض حالياً؟" : "2. Any current breast symptoms?"}
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setHasSymptoms(true)}
+                    className={cn(
+                      "flex-1 rounded-xl py-2 text-xs font-semibold transition border",
+                      hasSymptoms === true
+                        ? "border-rose-300 bg-rose-50 text-rose-800 font-bold"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {isArabic ? "نعم (كتلة / ألم / إفرازات)" : "Yes (lump / pain)"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHasSymptoms(false)}
+                    className={cn(
+                      "flex-1 rounded-xl py-2 text-xs font-semibold transition border",
+                      hasSymptoms === false
+                        ? "border-teal-300 bg-teal-50 text-teal-800 font-bold"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {isArabic ? "لا أعراض" : "No symptoms"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                <label className="block text-xs font-bold text-slate-700 mb-2">
+                  {isArabic ? "٣. تاريخ إصابة في العائلة؟" : "3. First-degree family history?"}
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setHasFamilyHistory(true)}
+                    className={cn(
+                      "flex-1 rounded-xl py-2 text-xs font-semibold transition border",
+                      hasFamilyHistory === true
+                        ? "border-teal-300 bg-teal-50 text-teal-800 font-bold"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {isArabic ? "نعم (أم / أخت / خالة)" : "Yes"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setHasFamilyHistory(false)}
+                    className={cn(
+                      "flex-1 rounded-xl py-2 text-xs font-semibold transition border",
+                      hasFamilyHistory === false
+                        ? "border-teal-300 bg-teal-50 text-teal-800 font-bold"
+                        : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                    )}
+                  >
+                    {isArabic ? "لا يوجد" : "None"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {recommendation ? (
+              <div className={cn("mt-6 rounded-2xl border p-5 shadow-sm transition animate-in fade-in duration-300", recommendation.color)}>
+                <span className="inline-flex rounded-full bg-white/80 px-3 py-1 text-xs font-bold shadow-xs">
+                  {recommendation.badge}
+                </span>
+                <h4 className="font-display mt-2.5 text-base font-bold sm:text-lg">{recommendation.title}</h4>
+                <p className="mt-1.5 text-sm leading-6 opacity-90">{recommendation.description}</p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <a
+                    href="tel:16602"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-teal-700 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-teal-800"
+                  >
+                    <Phone className="size-3.5" />
+                    <span>{isArabic ? "اتصلي بـ 16602 للحجز الآن" : "Call 16602 to book"}</span>
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <p className="mt-4 text-xs text-slate-500 italic">
+                {isArabic
+                  ? "أدخلي سنكِ وحددي إجاباتكِ بالأعلى لظهور التوصية المباشرة."
+                  : "Enter your age and selections above to see personalized booking guidance."}
+              </p>
+            )}
+          </div>
+
+          <p className="mt-4 text-xs font-medium text-slate-500">{t.eligibilityNote}</p>
+          <SourceLink href={bahyaSources.booking} label={t.bookingLink} />
+        </section>
 
         <section className="mt-10"><p className="eyebrow"><UsersRound className="size-3.5" />{t.services}</p><p className="mt-3 max-w-3xl leading-7 text-slate-600">{t.serviceBody}</p><div className="mt-5 grid gap-4 md:grid-cols-3">{t.serviceCards.map((service, index) => { const Icon = [UsersRound, Stethoscope, HeartHandshake][index]; return <article key={service.title} className="rounded-[1.5rem] border border-slate-100 bg-white p-6 shadow-sm"><Icon className="size-6 text-teal-700" /><h2 className="font-display mt-4 text-xl font-bold text-slate-900">{service.title}</h2><p className="mt-3 text-sm leading-7 text-slate-600">{service.body}</p><SourceLink href={bahyaSources[service.source]} label={t.officialSource} /></article>; })}</div></section>
 

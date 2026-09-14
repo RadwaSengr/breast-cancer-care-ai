@@ -49,6 +49,10 @@ const TRUSTED_SOURCE_HOSTS = new Set([
   "stacks.cdc.gov",
   "www.cdc.gov",
   "pubmed.ncbi.nlm.nih.gov",
+  "asco.org",
+  "www.asco.org",
+  "baheya.org",
+  "www.baheya.org",
 ]);
 
 function stripPdfText(text: string) {
@@ -82,7 +86,7 @@ export function assertTrustedPdfSource(sourceUrl: string) {
     throw new Error("A valid HTTPS source URL is required.");
   }
   if (url.protocol !== "https:" || !TRUSTED_SOURCE_HOSTS.has(url.hostname)) {
-    throw new Error("Only trusted HTTPS sources from WHO, NCI, or NCCN can be indexed.");
+    throw new Error("Only trusted HTTPS sources from WHO, NCI, NCCN, ASCO, or Baheya can be indexed.");
   }
 }
 

@@ -10,6 +10,7 @@ import {
 } from "./medicalKnowledge";
 import { isBahyaLocalServicesQuestion } from "./bahyaKnowledge";
 import { getIndexedBahyaChunks, retrieveRelevantChunks, type RagChunk } from "./rag";
+import { generateClinicalConsultation, isBreastCancerScope } from "./clinicalConsultation";
 
 export type Citation = Pick<MedicalSource, "id" | "organization" | "url"> & {
   label: string;
@@ -59,11 +60,19 @@ const OUT_OF_SCOPE_SUGGESTIONS = {
   en: ["What follow-up is needed after breast-cancer treatment?", "Which symptoms should I report to my care team?", "What support is available during recovery?"],
 };
 
+const EXPLICIT_OUT_OF_SCOPE = /كب\s*كيك|cupcake|وصفة\s*(أكل|طبخ|طعام)?|طبخ|طبيخ|\brecipe\b|\bcook(?:ing)?\b|برمج(?:ة|ات)|\bكود\b|\bpython\b|\bjavascript\b|\bjava\b|\bc\+\+\b|\bhtml\b|\bcss\b|\bsql\b|عاصم(?:ة|ات)|\bcapital of\b|كرة\s*(قدم|سلة)|\bfootball\b|\bsoccer\b|سيار(?:ة|ات)|\bcars?\b|أسنان|ضرس|\btooth\b|\bteeth\b|\bdental\b|حيوان|حيوانات|\banimals?\b|\bpets?\b|طقس|\bweather\b|فيلم|أفلام|مسلسل|\bmovie\b|\bsong\b|أغني(?:ة|ات)|سياس(?:ة|ي)|\bpolitics\b|بورصة|أسهم|\bcrypto\b|بيتكوين/iu;
+
 function isBreastCancerScopeQuestion(question: string) {
   const normalized = question.toLocaleLowerCase();
-  const breastCancerTerms = /سرطان\s*الثدي|الثدي|استئصال\s*(الثدي|الماستكتومي)?|ماستكتومي|breast\s*cancer|breast\s*tumou?r|mastectomy|lumpectomy|mammogram|mammography|乳房/iu;
-  const oncologyCareTerms = /كيماوي|كيميائي|إشعاع|هرموني|مناعي|جراحة|خزعة|ورم|علاج|متابعة|ناجية|تعاف|تأهيل|أعراض|جرح|عدوى|حمى|حمي|حرارة|قشعريرة|الوذمة|دعم|حجز|بهية|chemotherapy|radiation|hormone|immunotherapy|oncology|tumou?r|biopsy|surgery|treatment|follow[- ]?up|survivorship|recovery|rehabilitation|symptom|wound|infection|fever|chills|lymphedema|support|bahya/iu;
-  const careContext = /سرطان|cancer|oncology|ثدي|breast|علاج|treatment|متابعة|follow[- ]?up|surviv|بهية|bahya|symptom|أعراض|report|أبلغ|care team|فريق الرعاية|recovery|تعاف|دعم|support/i;
+  if (EXPLICIT_OUT_OF_SCOPE.test(normalized)) {
+    return false;
+  }
+  const isGreeting = /^(?:السلام\s*عليكم|صباح\s*الخير|مساء\s*الخير|أهلا|اهلا|مرحبا|هاي|ازيك|ازيكو|عاملة\s*ايه|hello|hi|hey|good\s*morning|good\s*evening)[\s!.]*$/iu.test(normalized);
+  if (isGreeting) return true;
+
+  const breastCancerTerms = /سرطان\s*الثدي|الثدي|استئصال\s*(الثدي|الماستكتومي)?|ماستكتومي|breast\s*cancer|breast\s*tumou?r|mastectomy|lumpectomy|mammogram|mammography|كتلة|حلمة|إفرازات\s*الثدي|乳房/iu;
+  const oncologyCareTerms = /كيماوي|كيميائي|إشعاع|هرموني|مناعي|جراحة|خزعة|ورم|علاج|متابعة|ناجية|تعاف|تأهيل|أعراض|جرح|عدوى|حمى|حمي|حرارة|سخونية|قشعريرة|الوذمة|دعم|حجز|بهية|تنميل|إرهاق|تعب|غثيان|مناعة|عدلات|بوتيك|تطوع|16602|chemotherapy|radiation|hormone|immunotherapy|oncology|tumou?r|biopsy|surgery|treatment|follow[- ]?up|survivorship|recovery|rehabilitation|symptom|wound|infection|fever|chills|lymphedema|support|bahya|lump|discharge|neuropathy|fatigue|nausea|neutropenia|boutique|volunteer/iu;
+  const careContext = /سرطان|cancer|oncology|ثدي|breast|علاج|treatment|متابعة|follow[- ]?up|surviv|بهية|bahya|symptom|أعراض|report|أبلغ|care team|فريق الرعاية|recovery|تعاف|دعم|support|طبيب|دكتور|كشف|screening|مستشفى|hospital/i;
   return breastCancerTerms.test(normalized) || (oncologyCareTerms.test(normalized) && careContext.test(normalized));
 }
 
@@ -71,7 +80,7 @@ function buildOutOfScopeResponse(question: string, language: SupportedLanguage):
   const safeQuestion = question.replace(/[\r\n]+/g, " ").trim().slice(0, 160);
   return {
     answer: language === "ar"
-      ? `آسفة يا حبيبتي، مش هقدر أجاوب على «${safeQuestion}». أنا هنا مخصوصة للرد على أسئلة عن سرطان الثدي، العلاج والتعافي وخدمات الدعم. لو محتاجة دعم أسري أو إحالة لمستشار، اسألي دكتورك أو الأخصائية الاجتماعية عن الإحالة. السبب إني بامتنع عن الموضوعات اللي برا المجال ده هو حماية معلوماتك من معلومات ممكن تكون مضللة، وتركيز المساعدة على سلامتكِ. أقدر أساعدك بدلًا من ذلك في التغذية المناسبة خلال التعافي، أو تجهيز أسئلة لفريق علاج سرطان الثدي. سؤالك خارج هذا السياق.`
+      ? `آسفة يا حبيبتي، مش هقدر أجاوب على «${safeQuestion}». أنا هنا مخصوصة فقط للرد على الاستشارات والمعلومات الطبية الموثوقة عن سرطان الثدي، مراحل العلاج والتعافي، والدعم النفسي وخدمات مؤسسة بهية. السبب إني بامتنع عن الموضوعات اللي برا المجال ده هو حماية معلوماتك من معلومات ممكن تكون مضللة، وتركيز المساعدة على سلامتكِ. أقدر أساعدك بدلًا من ذلك في التغذية المناسبة خلال التعافي، أو تجهيز أسئلة لفريق علاج سرطان الثدي. سؤالك خارج هذا السياق.`
       : `I’m sorry, but I can’t answer “${safeQuestion}.” I’m specifically here for questions about breast cancer, treatment, recovery, and support services. If you need family support or a counselor referral, please ask your doctor or social worker about a referral. I stay within this scope to protect you from misleading information and keep the focus on your safety. I can instead help with nutrition during breast-cancer recovery or questions to ask your care team. This question is outside my scope.`,
     suggestedQuestions: OUT_OF_SCOPE_SUGGESTIONS[language],
   };
@@ -214,8 +223,17 @@ export function buildFallbackResponse(question: string, language: SupportedLangu
   const acknowledgement = language === "ar"
     ? "شكرًا لمشاركتك سؤالك. أستطيع تقديم توجيه تعليمي عام فقط، لكن لا أستطيع تشخيص السبب أو تحديد ما يجب أن تفعليه طبياً في حالتك."
     : "Thank you for sharing your question. I can offer general educational guidance only, but I cannot diagnose the cause or determine what you should do medically in your situation.";
-  const sourceSummary = focus.content[language];
 
+  if (question && question.trim().length > 0 && isBreastCancerScope(question)) {
+    const consultation = generateClinicalConsultation(question, language);
+    const resolvedSources = sources.length > 0 ? sources : [focus];
+    return {
+      answer: ensureInlineSources(`${acknowledgement}\n\n${consultation.answer}`, resolvedSources, language),
+      suggestedQuestions: consultation.suggestedQuestions.length === 3 ? consultation.suggestedQuestions : DEFAULT_SUGGESTIONS[language],
+    };
+  }
+
+  const sourceSummary = focus.content[language];
   return {
     answer: ensureInlineSources(`${acknowledgement}\n\n${sourceSummary}`, sources, language),
     suggestedQuestions: DEFAULT_SUGGESTIONS[language],
@@ -321,7 +339,26 @@ export async function createAftercareResponse(input: {
     ? "Write in clear, warm Egyptian Arabic (الفصحى المبسطة القريبة من المصرية، مع مخاطبة المريضة بـ\"إنتِ\" — مثل: \"إنتِ مش لوحدك\"، \"اطمنّي\", \"اتصلي\", \"اكلميني\" when natural). Address the patient with respect and kindness, as an Egyptian woman."
     : "Write in plain, warm, respectful English. Address the patient with kindness.";
   const recentHistory = history.slice(-6).map(turn => `${turn.role.toUpperCase()}: ${turn.content.slice(0, 900)}`).join("\n");
-  const systemPrompt = `You are AI After-Care Assistant, a calm, respectful breast-cancer patient education companion. Reply only in ${languageName}. ${languageStyle}. When the question concerns access, booking, branches, contact numbers, or practical services in Egypt, rely on the Bahya Foundation (مؤسسة بهية) source in the context and always mention the official hotline 16602. You are not a doctor and do not diagnose, triage a patient beyond the supplied safety alert, prescribe, recommend a treatment plan, interpret test results, or replace the patient's clinician. Do not provide medication doses or wound-care instructions. Do not invent facts or sources.
+  const systemPrompt = `You are AI After-Care Assistant, a calm, warm, and highly respectful breast-cancer patient education companion. Reply only in ${languageName}. ${languageStyle}. When the question concerns access, booking, branches, contact numbers, or practical services in Egypt, rely on the Bahya Foundation (مؤسسة بهية) source in the context and always mention the official hotline 16602. You are not a doctor and do not diagnose, triage a patient beyond the supplied safety alert, prescribe, recommend a treatment plan, interpret test results, or replace the patient's clinician. Do not provide medication doses or wound-care instructions. Do not invent facts or sources.
+
+GROUNDING RULES:
+You must strictly base your answers on the curated authoritative sources in the context below:
+1. Baheya Foundation Psychosocial Support, Women Empowerment & Volunteering (https://baheya.org/ar/baheya_services/4)
+2. NCI Infection and Neutropenia during Cancer Treatment (https://www.cancer.gov/about-cancer/treatment/side-effects/infection)
+3. NCCN Guidelines for Patients: Breast Cancer & Supportive Care (https://www.nccn.org/patientresources/patient-resources/guidelines-for-patients)
+4. Baheya Foundation Booking, Branches, and Eligibility (https://baheya.org/ar/media_article/320)
+5. ASCO Guidelines on Survivorship Care (https://www.asco.org/news-initiatives/current-initiatives/cancer-care-initiatives/prevention-survivorship/survivorship-compendium/guidelines)
+
+STRICT DOMAIN BOUNDARY:
+Never answer questions outside breast cancer care, treatment, aftercare, recovery, emotional support, and Baheya services.
+
+CLINICAL SAFETY MANDATES (CRITICAL):
+- NEVER prescribe medications, medical treatments, or drug dosages.
+- NEVER tell the patient to order or perform specific laboratory or blood tests on her own.
+- NEVER provide a diagnosis.
+- ALWAYS emphasize that in-person clinical evaluation by a specialist physician is the only safe and accurate way to assess symptoms.
+- For fever >= 38°C (100.5°F) or signs of infection during treatment, emphasize that it requires immediate doctor or emergency contact, and warn NEVER to self-medicate with fever reducers before consulting the team.
+- When answering in Egypt context, always guide to Baheya Foundation (hotline 16602) for free screening or surgery clinic.
 
 Use ONLY the curated source context below for factual medical content. Keep the response concise, supportive, and educational. If the question needs individualized assessment or is outside the source context, say that the patient should ask their care team rather than guessing. Cite the first factual statement supported by each source with the exact Markdown source link supplied in the context; do not repeat the same source link within an answer. Every answer must contain at least one source link. When the question is practical (booking, branches, contact) and the Bahya source is relevant, end the answer by directing the patient to the hotline 16602 for confirmation.
 
